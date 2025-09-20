@@ -1,18 +1,15 @@
-import { COPY } from "@/lib/copy"
-import { SectionShell } from "@/components/SectionShell"
-
+import { SectionShell } from "@/components/SectionShell";
+import { COPY } from "@/lib/copy";
+import { Timeline } from "@/components/Timeline";
 
 export function Roadmap() {
-return (
-<SectionShell id="roadmap" title={COPY.roadmap.title}>
-<div className="grid gap-4 md:grid-cols-3">
-{COPY.roadmap.phases.map((p, i) => (
-<div key={i} className="rounded-2xl border p-6">
-<div className="font-semibold">{p.phase}</div>
-<div className="text-muted-foreground">{p.detail}</div>
-</div>
-))}
-</div>
-</SectionShell>
-)
+  const items = COPY.roadmap.phases.map((p) => ({
+    title: p.phase,
+    body: p.detail
+  }));
+  return (
+    <SectionShell id="roadmap" title={COPY.roadmap.title}>
+      <Timeline items={items} />
+    </SectionShell>
+  );
 }

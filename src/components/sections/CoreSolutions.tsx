@@ -1,15 +1,16 @@
-import { COPY } from "@/lib/copy"
-import { SectionShell } from "@/components/SectionShell"
-
+import { SectionShell } from "@/components/SectionShell";
+import { COPY } from "@/lib/copy";
 
 export function CoreSolutions() {
-return (
-<SectionShell id="advantages" title={COPY.core.title}>
-<ul className="grid gap-4 md:grid-cols-2">
-{COPY.core.bullets.map((b, i) => (
-<li key={i} className="rounded-2xl border p-6 text-muted-foreground">{b}</li>
-))}
-</ul>
-</SectionShell>
-)
+  return (
+    <SectionShell id="advantages" title={COPY.core.title}>
+      <ul className="grid gap-4 md:grid-cols-2">
+        {COPY.core.bullets.map((b, i) => (
+          <li key={i} className="rounded-2xl border p-6 text-muted-foreground">
+            {b}
+          </li>
+        ))}
+      </ul>
+    </SectionShell>
+  );
 }
