@@ -10,6 +10,14 @@ const COPY = {
     { href: "#recognition", label: "Recognition" },
     { href: "#contact", label: "Contact" }
   ],
+
+  hero: {
+    h1: "Neurolect — the OS layer for brain–computer interfaces",
+    sub: "From raw signals to safe, portable neurosignatures developers can build on.",
+    primaryCta: "Request investor call",
+    secondaryCta: "Download investor pack"
+  },
+
   whatIs: {
     title: "Neurolect — Operating System for Brain–Computer Interfaces",
     body:
@@ -17,6 +25,7 @@ const COPY = {
       "It enables brain-to-device and brain-to-brain communication via neurosignatures, " +
       "with safety, privacy, and developer-friendly primitives."
   },
+
   challenges: {
     title: "Key challenges we’re solving",
     items: [
@@ -26,6 +35,7 @@ const COPY = {
       { title: "Interoperability", body: "Hardware-agnostic drivers and a common API/SDK for apps and devices." }
     ]
   },
+
   core: {
     title: "Neurolect core solutions",
     bullets: [
@@ -35,6 +45,7 @@ const COPY = {
       "Dev SDKs: TypeScript/Rust kits, simulators, reference apps."
     ]
   },
+
   tech: {
     title: "Technology stack",
     layers: [
@@ -45,6 +56,7 @@ const COPY = {
       "SDKs & APIs: app surface, event bus, storage adapters."
     ]
   },
+
   useCases: {
     title: "Use cases",
     items: [
@@ -56,6 +68,7 @@ const COPY = {
       "Neuro-secure authentication (consented)"
     ]
   },
+
   roadmap: {
     title: "Roadmap",
     phases: [
@@ -66,14 +79,28 @@ const COPY = {
       { phase: "v1.0 Launch", detail: "Stable APIs, store for apps/drivers, governance bootstrap." }
     ]
   },
+
+  // Page: /investors
+  investors: {
+    title: "For Investors",
+    body:
+      "We’re raising to bring the Neurolect OS to developers and device makers. " +
+      "Book a call, grab the pack, or request the full data room.",
+    calendlyUrl:
+      "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2jtVwCNFO-gN8hhIBFH_D77MF1oouFKFWdFWXv7hMRuZUXltBB-BVk54T6uN6_zJi16slzapI-"
+  },
+
+  // (comma was missing above) ↓↓↓
   team: {
     title: "Team & Advisors",
     sub: "Cross-disciplinary team across neuroscience, HCI, security, and infra."
   },
+
   testimonials: {
     title: "Recognition",
     sub: "Quotes & logos coming soon — partners, researchers, ecosystem supporters."
   },
+
   finalCta: {
     title: "Build with Neurolect",
     sub: "Join the dev preview, propose integrations, or collaborate on research."
