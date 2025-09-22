@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { BRAND } from "@/lib/brand";
+import { track } from "@/lib/analytics";
 
 export default function Hero() {
   return (
@@ -17,7 +17,6 @@ export default function Hero() {
         >
           {BRAND.name}
         </motion.h1>
-
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -26,7 +25,6 @@ export default function Hero() {
         >
           {BRAND.tagline}
         </motion.p>
-
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -35,33 +33,17 @@ export default function Hero() {
         >
           {BRAND.description}
         </motion.p>
-
-        <div className="mt-8 flex flex-wrap gap-3">
-          {/* Primary → Investors funnel */}
-          <Button
-            size="lg"
-            asChild
-            aria-label="Request an investor call"
-            data-analytics="cta-investors"
-          >
-            <Link href="/investors">{BRAND.ctaPrimary ?? "Request investor call"}</Link>
+        <div className="mt-8 flex gap-3">
+          <Button size="lg" onClick={() => track("hero_primary_cta_click")}>
+            {BRAND.ctaPrimary}
           </Button>
-
-          {/* Secondary → keep whitepaper for now (switch to teaser pack later) */}
-          <Button
-            size="lg"
-            variant="secondary"
-            asChild
-            aria-label="Open the whitepaper"
-            data-analytics="cta-whitepaper"
-          >
-            <a href="/whitepaper" target="_blank" rel="noreferrer">
-              {BRAND.ctaSecondary ?? "Whitepaper"}
+          <Button size="lg" variant="secondary" asChild>
+            <a href="/whitepaper" target="_blank" rel="noreferrer" onClick={() => track("hero_secondary_cta_click")}>
+              {BRAND.ctaSecondary}
             </a>
           </Button>
         </div>
       </div>
-
       <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
     </section>
   );
