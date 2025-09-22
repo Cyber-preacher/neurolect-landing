@@ -11,7 +11,7 @@ export default function InvestorsPage() {
   const teaserHref = absoluteUrl("/pack/neurolect-investor-pack.pdf");
 
   const onError = (err: unknown) => {
-    // Use the value so eslint doesn’t warn; no disable directives needed
+    // Use the value so eslint doesn’t warn (no disable directives needed)
     if (process.env.NODE_ENV !== "production") {
       // eslint-disable-next-line no-console
       console.error("[Calendly iframe] load error:", err);

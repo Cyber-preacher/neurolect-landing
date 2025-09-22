@@ -2,7 +2,7 @@
 "use client";
 
 import * as React from "react";
-import Section from "@/components/sections/Section"; // robust absolute import
+import Section from "@/components/sections/Section";
 import { COPY } from "@/lib/copy";
 
 /**
@@ -46,9 +46,9 @@ function toIsoDate(when: string): string | undefined {
     const quarter = Number(qy[1]) as 1 | 2 | 3 | 4;
     const year = Number(qy[2]);
     const quarterStartMonthMap: Record<1 | 2 | 3 | 4, number> = {
-      1: 1, // Jan
-      2: 4, // Apr
-      3: 7, // Jul
+      1: 1,  // Jan
+      2: 4,  // Apr
+      3: 7,  // Jul
       4: 10, // Oct
     };
     const month = quarterStartMonthMap[quarter]; // 1..12
@@ -56,13 +56,13 @@ function toIsoDate(when: string): string | undefined {
     return isNaN(date.getTime()) ? undefined : date.toISOString();
   }
 
-  // Fallback
   return undefined;
 }
 
 type Item = { title: string; when: string; status?: "done" | "planned" };
 
-export default function Roadmap() {
+// Declare named function so we can export both default and named.
+function Roadmap() {
   const c = COPY.roadmap;
   const items: Item[] =
     c?.items ??
@@ -102,3 +102,6 @@ export default function Roadmap() {
     </Section>
   );
 }
+
+export default Roadmap;
+export { Roadmap }; // so `import { Roadmap } from "@/components/sections/Roadmap"` also works
