@@ -14,8 +14,10 @@ const schema = z.object({
   email: z.string().email("Please enter a valid email"),
   company: z.string().optional(),
   message: z.string().min(1, "Tell us a bit about your interest"),
-  // Honeypot (should be empty)
-  website: z.string().max(0).optional().or(z.literal("")),
+  website: z.string().max(0).optional().or(z.literal("")), // honeypot
+  // Anti-spam fields:
+  ts: z.number().int().positive(),
+  token: z.string().min(1),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -25,6 +27,7 @@ export default function InvestorForm() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -34,10 +37,32 @@ export default function InvestorForm() {
       company: "",
       message: "",
       website: "",
+      ts: 0,
+      token: "",
     },
   });
 
   const [server, setServer] = React.useState<{ ok: boolean; error?: string } | null>(null);
+
+  // Fetch anti-spam token on mount
+  React.useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        const res = await fetch("/api/anti-spam", { cache: "no-store" });
+        const json = (await res.json()) as { ok: boolean; ts: number; token: string };
+        if (alive && json?.ok && typeof json.ts === "number" && typeof json.token === "string") {
+          setValue("ts", json.ts, { shouldDirty: false });
+          setValue("token", json.token, { shouldDirty: false });
+        }
+      } catch {
+        // ignore; server will reject without token
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [setValue]);
 
   const onSubmit = async (values: FormValues) => {
     setServer(null);
@@ -70,21 +95,21 @@ export default function InvestorForm() {
         className="hidden"
       />
 
+      {/* Anti-spam hidden fields */}
+      <input type="hidden" {...register("ts", { valueAsNumber: true })} />
+      <input type="hidden" {...register("token")} />
+
       <div className="grid gap-4 md:grid-cols-2">
         <div>
           <label className="mb-1 block text-sm font-medium">Name</label>
           <Input placeholder="Ada Lovelace" {...register("name")} />
-          {errors.name && (
-            <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>
-          )}
+          {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>}
         </div>
 
         <div>
           <label className="mb-1 block text-sm font-medium">Email</label>
           <Input type="email" placeholder="investor@example.com" {...register("email")} />
-          {errors.email && (
-            <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>
-          )}
+          {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>}
         </div>
       </div>
 
