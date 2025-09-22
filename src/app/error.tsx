@@ -12,9 +12,8 @@ export default function GlobalError({
   reset: () => void;
 }) {
   React.useEffect(() => {
-    // Best effort logging (dev only)
+    // Best-effort logging (dev only)
     if (process.env.NODE_ENV !== "production") {
-      // eslint-disable-next-line no-console
       console.error("[app:error]", error?.message, error?.digest);
     }
   }, [error]);
