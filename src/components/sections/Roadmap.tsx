@@ -2,7 +2,7 @@
 "use client";
 
 import * as React from "react";
-import Section from "./Section";
+import Section from "@/components/sections/Section"; // robust absolute import
 import { COPY } from "@/lib/copy";
 
 /**
@@ -16,10 +16,10 @@ import { COPY } from "@/lib/copy";
 function toIsoDate(when: string): string | undefined {
   const s = when.trim();
 
-  // Exact YYYY-MM-DD
+  // YYYY-MM-DD
   const ymd = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
   if (ymd) {
-    const [_, y, m, d] = ymd;
+    const [, y, m, d] = ymd;
     const date = new Date(Date.UTC(Number(y), Number(m) - 1, Number(d)));
     return isNaN(date.getTime()) ? undefined : date.toISOString();
   }
@@ -27,7 +27,7 @@ function toIsoDate(when: string): string | undefined {
   // YYYY-MM
   const ym = /^(\d{4})-(\d{2})$/.exec(s);
   if (ym) {
-    const [_, y, m] = ym;
+    const [, y, m] = ym;
     const date = new Date(Date.UTC(Number(y), Number(m) - 1, 1));
     return isNaN(date.getTime()) ? undefined : date.toISOString();
   }
@@ -35,7 +35,7 @@ function toIsoDate(when: string): string | undefined {
   // YYYY
   const yOnly = /^(\d{4})$/.exec(s);
   if (yOnly) {
-    const [_, y] = yOnly;
+    const [, y] = yOnly;
     const date = new Date(Date.UTC(Number(y), 0, 1));
     return isNaN(date.getTime()) ? undefined : date.toISOString();
   }
@@ -45,12 +45,10 @@ function toIsoDate(when: string): string | undefined {
   if (qy) {
     const quarter = Number(qy[1]) as 1 | 2 | 3 | 4;
     const year = Number(qy[2]);
-
-    // Safe quarter → starting month map; never undefined
     const quarterStartMonthMap: Record<1 | 2 | 3 | 4, number> = {
-      1: 1,  // Jan
-      2: 4,  // Apr
-      3: 7,  // Jul
+      1: 1, // Jan
+      2: 4, // Apr
+      3: 7, // Jul
       4: 10, // Oct
     };
     const month = quarterStartMonthMap[quarter]; // 1..12
@@ -58,25 +56,26 @@ function toIsoDate(when: string): string | undefined {
     return isNaN(date.getTime()) ? undefined : date.toISOString();
   }
 
-  // Fallback: not parseable
+  // Fallback
   return undefined;
 }
 
+type Item = { title: string; when: string; status?: "done" | "planned" };
+
 export default function Roadmap() {
   const c = COPY.roadmap;
-  const items =
+  const items: Item[] =
     c?.items ??
     [
-      // Fallback demo items if COPY.roadmap is absent
-      { title: "Prototype v1", when: "Q4 2025", status: "planned" as const },
-      { title: "SDK Alpha", when: "2026-03", status: "planned" as const },
-      { title: "Device Driver Pack", when: "2026", status: "planned" as const },
+      { title: "Prototype v1", when: "Q4 2025", status: "planned" },
+      { title: "SDK Alpha", when: "2026-03", status: "planned" },
+      { title: "Device Driver Pack", when: "2026", status: "planned" },
     ];
 
   return (
     <Section id="roadmap" title={c?.title ?? "Roadmap"}>
       <ol className="relative border-s pl-6 space-y-6">
-        {items.map((it: { title: string; when: string; status?: "done" | "planned" }, idx: number) => {
+        {items.map((it, idx) => {
           const iso = toIsoDate(it.when);
           return (
             <li key={idx} className="ms-4">
