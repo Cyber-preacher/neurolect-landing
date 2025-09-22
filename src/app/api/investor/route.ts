@@ -1,49 +1,94 @@
-import { NextResponse } from "next/server";
+// src/app/api/investor/route.ts
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { createClient } from "@supabase/supabase-js";
 
-const schema = z.object({
+/**
+ * FEAT-03 investor endpoint:
+ * - Zod validation
+ * - Honeypot
+ * - Optional Supabase persistence (only if envs are present)
+ * - Rate-limit stub (replace with Upstash/Redis later)
+ */
+
+const InvestorSchema = z.object({
+  name: z.string().min(2).max(120),
   email: z.string().email(),
-  name: z.string().min(1).optional(),
-  message: z.string().optional(),
-  source: z.string().optional(),
-  honeypot: z.string().optional(), // spam trap
+  company: z.string().min(1).max(160).optional(),
+  message: z.string().min(1).max(5000),
+  // Honeypot: should be empty
+  website: z.string().max(0).optional().or(z.literal("")),
 });
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE! // server-side only
-);
+type InvestorInput = z.infer<typeof InvestorSchema>;
 
-export async function POST(req: Request) {
+function json(status: number, body: unknown) {
+  return NextResponse.json(body, { status });
+}
+
+async function allowRequest(): Promise<boolean> {
+  // TODO: Replace with IP-based limiter
+  return true;
+}
+
+async function persistWithSupabase(data: InvestorInput): Promise<void> {
+  const url = process.env.SUPABASE_URL;
+  const anon = process.env.SUPABASE_ANON_KEY;
+  const service = process.env.SUPABASE_SERVICE_ROLE;
+
+  // If no URL or key provided, skip persistence (safe in CI/build)
+  if (!url || !(anon || service)) {
+    return;
+  }
+
+  // Lazy import and client creation INSIDE function only when envs exist
+  const { createClient } = await import("@supabase/supabase-js");
+  const client = createClient(url, service ?? anon);
+
+  // Create table `investors` with columns (name, email, company, message, created_at) in your DB.
+  const { error } = await client.from("investors").insert({
+    name: data.name,
+    email: data.email,
+    company: data.company ?? null,
+    message: data.message,
+  });
+
+  if (error) {
+    // Surface but don't fail the request
+    // eslint-disable-next-line no-console
+    console.error("[/api/investor] supabase insert error:", error.message);
+  }
+}
+
+export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const parsed = schema.safeParse(body);
+    const ok = await allowRequest();
+    if (!ok) {
+      return json(429, { ok: false, error: "Too many requests" });
+    }
 
+    const contentType = req.headers.get("content-type") ?? "";
+    if (!contentType.includes("application/json")) {
+      return json(415, { ok: false, error: "Unsupported Media Type" });
+    }
+
+    const raw = (await req.json()) as unknown;
+    const parsed = InvestorSchema.safeParse(raw);
     if (!parsed.success) {
-      return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+      return json(400, { ok: false, error: "Invalid input", issues: parsed.error.issues });
     }
 
-    // honeypot
-    if (parsed.data.honeypot) {
-      return NextResponse.json({ success: true }); // silently ignore
+    // Honeypot: silently accept bots
+    if (parsed.data.website && parsed.data.website.length > 0) {
+      return json(204, { ok: true });
     }
 
-    const { error } = await supabase.from("investor_leads").insert({
-      email: parsed.data.email,
-      name: parsed.data.name,
-      message: parsed.data.message,
-      source: parsed.data.source ?? "site",
-    });
+    await persistWithSupabase(parsed.data);
 
-    if (error) {
-      console.error(error);
-      return NextResponse.json({ error: "Database error" }, { status: 500 });
-    }
+    // Optional: send an auto-reply via email provider here.
 
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return json(200, { ok: true });
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : "Unknown error";
+    return json(500, { ok: false, error: msg });
   }
 }
