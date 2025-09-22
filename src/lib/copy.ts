@@ -2,7 +2,8 @@ const COPY = {
   nav: [
     { href: "#about", label: "What is Neurolect" },
     { href: "#how-it-works", label: "How it works" },
-    { href: "#moat", label: "Moat & IP" },                   // NEW
+    { href: "#moat", label: "Moat & IP" },
+    { href: "#safety", label: "Safety & Ethics" }, // NEW
     { href: "#solutions", label: "Challenges & Solutions" },
     { href: "#advantages", label: "Core Solutions" },
     { href: "#use-cases", label: "Use cases" },
@@ -40,7 +41,6 @@ const COPY = {
     ]
   },
 
-  // NEW — Moat & IP
   moat: {
     title: "Moat & IP",
     sub: "A defensible stack: schema + runtime + drivers + evaluation + governance.",
@@ -67,6 +67,38 @@ const COPY = {
       }
     ],
     callout: "The core IP is the schema + runtime coupling: consent-aware neurosignatures that remain portable yet controllable."
+  },
+
+  // NEW — Safety & Ethics
+  safety: {
+    title: "Safety & Ethics",
+    sub: "We design for consent, revocability, and human agency — before performance.",
+    items: [
+      {
+        title: "Consent & control",
+        body: "All capabilities are granted per scope, per app. Users can revoke at any time; grants expire by default."
+      },
+      {
+        title: "Privacy by design",
+        body: "Neurosignatures are user-owned artifacts with provenance; apps receive only the minimum signals needed."
+      },
+      {
+        title: "Rate limits & guardrails",
+        body: "Limits per capability and per app prevent feedback loops and abuse; safety tests run in CI."
+      },
+      {
+        title: "Stimulation safeguards",
+        body: "Protective defaults for any actuators; human-in-the-loop for sensitive actions and overrides."
+      },
+      {
+        title: "Auditability",
+        body: "Every consented action is logged with source, scope, and time to enable post-hoc review."
+      }
+    ],
+    link: {
+      href: "/pack/neurolect-safety-ethics.pdf", // placeholder, add later
+      label: "Safety & Ethics 1-pager (PDF)"
+    }
   },
 
   challenges: {
