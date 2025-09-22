@@ -2,23 +2,24 @@
 import * as React from "react";
 import Link from "next/link";
 import { SITE, absoluteUrl } from "@/lib/site";
+import InvestorForm from "@/components/InvestorForm";
 
 /**
- * Investors page scaffold with Calendly + teaser pack.
- * Adjust copy/layout as you evolve the sectionized design.
+ * Investors page with Calendly + teaser pack + request form.
  */
 export default function InvestorsPage() {
   const teaserHref = absoluteUrl("/pack/neurolect-investor-pack.pdf");
 
   const onError = (err: unknown) => {
-    // Use the value so eslint doesn't flag it as unused:
     if (process.env.NODE_ENV !== "production") {
+      // eslint rule stays happy because value is used:
       // eslint-disable-next-line no-console
       console.error("[Calendly iframe] load error:", err);
     }
   };
 
-  const calendlySrc = SITE.calendly && SITE.calendly.length > 0 ? SITE.calendly : "about:blank";
+  const calendlySrc =
+    SITE.calendly && SITE.calendly.length > 0 ? SITE.calendly : "about:blank";
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-12">
@@ -38,6 +39,11 @@ export default function InvestorsPage() {
               onError={(e) => onError((e as unknown) ?? new Error("Calendly failed to load"))}
             />
           </div>
+          {calendlySrc === "about:blank" && (
+            <p className="mt-2 text-xs text-muted-foreground">
+              Set <code>SITE.calendly</code> in <code>src/lib/site.ts</code> to enable booking.
+            </p>
+          )}
         </div>
 
         <div className="rounded-xl border p-4">
@@ -56,13 +62,14 @@ export default function InvestorsPage() {
         </div>
       </section>
 
-      {/* Optional: Request Data Room form mounts here */}
       <section className="mt-8 rounded-xl border p-4">
         <h2 className="text-xl font-medium">Request Data Room</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Submit your details and we’ll follow up with access.
         </p>
-        {/* <InvestorForm /> */}
+        <div className="mt-4">
+          <InvestorForm />
+        </div>
       </section>
     </main>
   );
