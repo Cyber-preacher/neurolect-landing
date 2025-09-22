@@ -1,18 +1,19 @@
 // src/lib/analytics.ts
-
 /**
  * Type-safe wrapper for Plausible (or similar) custom events.
- * Avoids `any`; uses structured, serializable props.
  */
 
 type Primitive = string | number | boolean | null;
 export type AnalyticsProps = Record<string, Primitive>;
 
+type PlausibleFn = ((
+  eventName: string,
+  options?: { props?: AnalyticsProps }
+) => void) & { q?: unknown[] };
+
 declare global {
   interface Window {
-    plausible?: ((eventName: string, options?: { props?: AnalyticsProps }) => void) & {
-      q?: unknown[];
-    };
+    plausible?: PlausibleFn;
   }
 }
 
@@ -21,15 +22,17 @@ declare global {
  */
 export function track(eventName: string, props?: AnalyticsProps): void {
   if (typeof window === "undefined") return;
-  // Initialize a lightweight queue if plausible is not yet ready
+
   if (!window.plausible) {
-    const q: unknown[] = [];
+    const queue: unknown[] = [];
     const fn = ((name: string, options?: { props?: AnalyticsProps }) => {
-      (fn.q = fn.q ?? []);
-      fn.q.push([name, options] as const);
-    }) as Window["plausible"];
-    fn.q = q;
+      // Ensure q exists before pushing
+      (fn as PlausibleFn).q = (fn as PlausibleFn).q ?? [];
+      (fn as PlausibleFn).q!.push([name, options] as const);
+    }) as PlausibleFn;
+    fn.q = queue;
     window.plausible = fn;
   }
+
   window.plausible(eventName, props ? { props } : undefined);
 }
