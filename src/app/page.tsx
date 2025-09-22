@@ -1,14 +1,16 @@
-import Navbar from "@/components/Navbar";
+﻿import Navbar from "@/components/Navbar";
 import Hero from "@/components/sections/Hero";
 import HowItWorks from "@/components/sections/HowItWorks";
 import Moat from "@/components/sections/Moat";
 import Safety from "@/components/sections/Safety";
+import WhyNow from "@/components/sections/WhyNow";
 import { WhatIs } from "@/components/sections/WhatIs";
 import { ChallengesSolutions } from "@/components/sections/ChallengesSolutions";
 import { CoreSolutions } from "@/components/sections/CoreSolutions";
 import { UseCases } from "@/components/sections/UseCases";
 import { TechStack } from "@/components/sections/TechStack";
 import { Roadmap } from "@/components/sections/Roadmap";
+import Traction from "@/components/sections/Traction";
 import { Team } from "@/components/sections/Team";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { FinalCTA } from "@/components/sections/FinalCTA";
@@ -22,12 +24,14 @@ export default function Home() {
         <HowItWorks />
         <Moat />
         <Safety />
+        <WhyNow />
         <WhatIs />
         <ChallengesSolutions />
         <CoreSolutions />
         <UseCases />
         <TechStack />
         <Roadmap />
+        <Traction />
         <Team />
         <Testimonials />
         <FinalCTA />
