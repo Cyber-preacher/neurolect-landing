@@ -51,7 +51,7 @@ function toIsoDate(when: string): string | undefined {
       3: 7,  // Jul
       4: 10, // Oct
     };
-    const month = quarterStartMonthMap[quarter]; // 1..12
+    const month = quarterStartMonthMap[quarter];
     const date = new Date(Date.UTC(year, month - 1, 1));
     return isNaN(date.getTime()) ? undefined : date.toISOString();
   }
@@ -59,30 +59,40 @@ function toIsoDate(when: string): string | undefined {
   return undefined;
 }
 
-type Item = { title: string; when: string; status?: "done" | "planned" };
+type Phase = {
+  id: string;
+  phase: string;   // short title
+  detail: string;  // description
+  status: "done" | "planned" | string;
+  date: string;    // accepts formats parsed by toIsoDate
+};
 
-// Declare named function so we can export both default and named.
+// Named function so we can export both default and named
 function Roadmap() {
-  const c = COPY.roadmap;
-  const items: Item[] =
-    c?.items ??
-    [
-      { title: "Prototype v1", when: "Q4 2025", status: "planned" },
-      { title: "SDK Alpha", when: "2026-03", status: "planned" },
-      { title: "Device Driver Pack", when: "2026", status: "planned" },
+  const c = COPY.roadmap as
+    | { title: string; phases: Phase[] }
+    | undefined;
+
+  // Prefer COPY.roadmap.phases; fall back to demo phases
+  const phases: Phase[] =
+    c?.phases ?? [
+      { id: "proto", phase: "Prototype v1", detail: "End-to-end demo", status: "planned", date: "Q4 2025" },
+      { id: "sdk", phase: "SDK Alpha", detail: "Bindings + docs", status: "planned", date: "2026-03" },
+      { id: "drivers", phase: "Driver Pack", detail: "Vendors A/B", status: "planned", date: "2026" },
     ];
 
   return (
     <Section id="roadmap" title={c?.title ?? "Roadmap"}>
       <ol className="relative border-s pl-6 space-y-6">
-        {items.map((it, idx) => {
-          const iso = toIsoDate(it.when);
+        {phases.map((it) => {
+          const iso = toIsoDate(it.date);
+          const status = it.status === "done" ? "done" : "planned";
           return (
-            <li key={idx} className="ms-4">
+            <li key={it.id} className="ms-4">
               <div className="absolute -start-1.5 mt-1.5 h-3 w-3 rounded-full border bg-background" />
               <div className="flex items-center gap-2">
-                <h3 className="font-medium">{it.title}</h3>
-                {it.status === "done" ? (
+                <h3 className="font-medium">{it.phase}</h3>
+                {status === "done" ? (
                   <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700">
                     achieved
                   </span>
@@ -92,8 +102,9 @@ function Roadmap() {
                   </span>
                 )}
               </div>
+              <p className="mt-1 text-sm text-muted-foreground">{it.detail}</p>
               <p className="mt-1 text-sm text-muted-foreground">
-                <time dateTime={iso ?? ""}>{it.when}</time>
+                <time dateTime={iso ?? ""}>{it.date}</time>
               </p>
             </li>
           );
@@ -104,4 +115,4 @@ function Roadmap() {
 }
 
 export default Roadmap;
-export { Roadmap }; // so `import { Roadmap } from "@/components/sections/Roadmap"` also works
+export { Roadmap };
