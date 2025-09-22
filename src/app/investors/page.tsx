@@ -1,21 +1,24 @@
 // src/app/investors/page.tsx
 import * as React from "react";
-import { SITE } from "@/lib/site";
-import { absoluteUrl } from "@/lib/site";
 import Link from "next/link";
+import { SITE, absoluteUrl } from "@/lib/site";
 
 /**
- * Minimal investors page scaffold.
- * Assumes you already wired Calendly + teaser pack elsewhere;
- * iframes/Forms can be dropped into the placeholders below.
+ * Investors page scaffold with Calendly + teaser pack.
+ * Adjust copy/layout as you evolve the sectionized design.
  */
 export default function InvestorsPage() {
   const teaserHref = absoluteUrl("/pack/neurolect-investor-pack.pdf");
 
-  // Example handler with safe unused var (prefix with underscore)
-  const onError = (_err: unknown) => {
-    // you can route this to Sentry or console in non-prod
+  const onError = (err: unknown) => {
+    // Use the value so eslint doesn't flag it as unused:
+    if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.error("[Calendly iframe] load error:", err);
+    }
   };
+
+  const calendlySrc = SITE.calendly && SITE.calendly.length > 0 ? SITE.calendly : "about:blank";
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-12">
@@ -28,12 +31,11 @@ export default function InvestorsPage() {
         <div className="rounded-xl border p-4">
           <h2 className="text-xl font-medium">Book a call</h2>
           <div className="mt-3 aspect-video rounded-lg border">
-            {/* Calendly iframe placeholder */}
             <iframe
               title="Calendly"
-              src={SITE.calendly ?? "about:blank"}
+              src={calendlySrc}
               className="h-full w-full rounded-lg"
-              onError={() => onError(new Error("Calendly failed to load"))}
+              onError={(e) => onError((e as unknown) ?? new Error("Calendly failed to load"))}
             />
           </div>
         </div>
@@ -60,7 +62,7 @@ export default function InvestorsPage() {
         <p className="mt-2 text-sm text-muted-foreground">
           Submit your details and we’ll follow up with access.
         </p>
-        {/* Your <InvestorForm /> component can be rendered here */}
+        {/* <InvestorForm /> */}
       </section>
     </main>
   );
