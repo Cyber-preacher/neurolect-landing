@@ -1,56 +1,124 @@
+// src/components/InvestorForm.tsx
 "use client";
 
-import { useState } from "react";
+import * as React from "react";
+import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 const schema = z.object({
-  email: z.string().email(),
-  name: z.string().optional(),
-  message: z.string().optional(),
+  name: z.string().min(2, "Please enter your name"),
+  email: z.string().email("Please enter a valid email"),
+  company: z.string().optional(),
+  message: z.string().min(1, "Tell us a bit about your interest"),
+  // Honeypot (should be empty)
+  website: z.string().max(0).optional().or(z.literal("")),
 });
 
-type FormData = z.infer<typeof schema>;
+type FormValues = z.infer<typeof schema>;
 
 export default function InvestorForm() {
-  const { register, handleSubmit, formState } = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+  } = useForm<FormValues>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      name: "",
+      email: "",
+      company: "",
+      message: "",
+      website: "",
+    },
   });
-  const [status, setStatus] = useState<"idle" | "ok" | "error">("idle");
 
-  const onSubmit = async (data: FormData) => {
-    setStatus("idle");
+  const [server, setServer] = React.useState<{ ok: boolean; error?: string } | null>(null);
+
+  const onSubmit = async (values: FormValues) => {
+    setServer(null);
     try {
       const res = await fetch("/api/investor", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(values),
       });
-      if (res.ok) setStatus("ok");
-      else setStatus("error");
-    } catch {
-      setStatus("error");
+      const data = (await res.json()) as { ok: boolean; error?: string };
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || `HTTP ${res.status}`);
+      }
+      setServer({ ok: true });
+      reset();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Unknown error";
+      setServer({ ok: false, error: msg });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
-      <Input placeholder="Your email" {...register("email")} />
-      <Input placeholder="Your name (optional)" {...register("name")} />
-      <Textarea
-        placeholder="Message or request"
-        {...register("message")}
-        className="min-h-[120px]"
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Honeypot */}
+      <input
+        type="text"
+        autoComplete="off"
+        tabIndex={-1}
+        {...register("website")}
+        className="hidden"
       />
-      <Button type="submit" disabled={formState.isSubmitting}>
-        {formState.isSubmitting ? "Sending..." : "Submit"}
-      </Button>
-      {status === "ok" && <p className="text-green-600">Thanks, we’ll reach out soon.</p>}
-      {status === "error" && <p className="text-red-600">Something went wrong.</p>}
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <div>
+          <label className="mb-1 block text-sm font-medium">Name</label>
+          <Input placeholder="Ada Lovelace" {...register("name")} />
+          {errors.name && (
+            <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="mb-1 block text-sm font-medium">Email</label>
+          <Input type="email" placeholder="investor@example.com" {...register("email")} />
+          {errors.email && (
+            <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm font-medium">Company (optional)</label>
+        <Input placeholder="Acme Ventures" {...register("company")} />
+        {errors.company && (
+          <p className="mt-1 text-xs text-destructive">{errors.company.message}</p>
+        )}
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm font-medium">Message</label>
+        <Textarea
+          placeholder="Tell us about your thesis and what you’d like to explore…"
+          rows={6}
+          {...register("message")}
+        />
+        {errors.message && (
+          <p className="mt-1 text-xs text-destructive">{errors.message.message}</p>
+        )}
+      </div>
+
+      <div className="flex items-center gap-3">
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Sending…" : "Request Access"}
+        </Button>
+        {isSubmitSuccessful && server?.ok && (
+          <span className="text-sm text-green-600">Thanks! We’ll be in touch.</span>
+        )}
+        {server && !server.ok && (
+          <span className="text-sm text-destructive">Error: {server.error}</span>
+        )}
+      </div>
     </form>
   );
 }
