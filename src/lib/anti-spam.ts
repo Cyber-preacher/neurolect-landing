@@ -13,13 +13,27 @@ import type { NextRequest } from "next/server";
 const DEFAULT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
 const DEFAULT_MAX_REQS = 12; // per window per IP
 
-// In-memory sliding window = Map<ip, number[]>
+// In-memory sliding window = Map<ipKey, number[]>
 const ipHits: Map<string, number[]> = new Map();
+
+/**
+ * Resolve a best-effort client IP from headers only (NextRequest has no `ip`).
+ * Prioritize standard proxy headers.
+ */
+function resolveIpFromHeaders(req: NextRequest): string {
+  const xfwd = req.headers.get("x-forwarded-for"); // e.g., "client, proxy1, proxy2"
+  if (xfwd && xfwd.length > 0) {
+    const first = xfwd.split(",")[0]?.trim();
+    if (first && first.length > 0) return first;
+  }
+  const xreal = req.headers.get("x-real-ip");
+  if (xreal && xreal.length > 0) return xreal.trim();
+  return "0.0.0.0";
+}
 
 export function getClientKey(req: NextRequest): string {
   // Best-effort IP + UA binding. Works behind common proxies.
-  const fwd = req.headers.get("x-forwarded-for") || "";
-  const ip = fwd.split(",")[0]?.trim() || req.ip || "0.0.0.0";
+  const ip = resolveIpFromHeaders(req);
   const ua = req.headers.get("user-agent") || "ua";
   // Keep short to avoid PII over-collection; hashing is enough for binding
   const hash = crypto.createHash("sha1").update(`${ip}|${ua}`).digest("hex");
@@ -43,10 +57,7 @@ export function issueToken(userKey: string, now = Date.now()): AntiSpamToken {
     // dev token
     return { ts, token: "dev" };
   }
-  const token = crypto
-    .createHmac("sha256", secret)
-    .update(`${userKey}:${ts}`)
-    .digest("hex");
+  const token = crypto.createHmac("sha256", secret).update(`${userKey}:${ts}`).digest("hex");
   return { ts, token };
 }
 
@@ -74,10 +85,7 @@ export function verifyToken(
     return token === "dev";
   }
 
-  const expected = crypto
-    .createHmac("sha256", secret)
-    .update(`${userKey}:${ts}`)
-    .digest("hex");
+  const expected = crypto.createHmac("sha256", secret).update(`${userKey}:${ts}`).digest("hex");
 
   // constant-time-ish compare
   return crypto.timingSafeEqual(Buffer.from(token), Buffer.from(expected));

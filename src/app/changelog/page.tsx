@@ -9,11 +9,6 @@ type Entry = {
   items: string[]; // bullets
 };
 
-type ChangelogShape = {
-  title?: string;
-  entries?: unknown;
-};
-
 function byDateDesc(a: Entry, b: Entry) {
   return new Date(b.date).getTime() - new Date(a.date).getTime();
 }
@@ -79,18 +74,17 @@ function readChangelogFromCopy(copyUnknown: unknown): { title: string; entries: 
   ];
 
   const copy = isRecord(copyUnknown) ? copyUnknown : {};
-  const maybeChangelog = isRecord(copy["changelog"]) ? (copy["changelog"] as Record<string, unknown>) : undefined;
+  const cl = isRecord(copy["changelog"]) ? (copy["changelog"] as Record<string, unknown>) : undefined;
 
   const title =
-    (maybeChangelog && typeof maybeChangelog["title"] === "string" && (maybeChangelog["title"] as string)) ||
-    "Changelog";
+    (cl && typeof cl["title"] === "string" && (cl["title"] as string)) || "Changelog";
 
-  const rawEntries = maybeChangelog?.["entries"];
-  if (!Array.isArray(rawEntries)) {
+  const raw = cl?.["entries"];
+  if (!Array.isArray(raw)) {
     return { title, entries: defaults };
   }
 
-  const parsed: Entry[] = rawEntries.filter(isEntry);
+  const parsed: Entry[] = raw.filter(isEntry);
   return { title, entries: parsed.length > 0 ? parsed : defaults };
 }
 
@@ -101,7 +95,7 @@ export const metadata = {
 };
 
 export default function ChangelogPage() {
-  // Read defensively from COPY without using `any`
+  // Read defensively from COPY without any `any`
   const { title, entries } = readChangelogFromCopy(COPY as unknown);
   const sorted = [...entries].sort(byDateDesc);
 
