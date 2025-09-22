@@ -1,4 +1,6 @@
-import Navbar from "@/components/Navbar";
+﻿import Navbar from "@/components/Navbar";
+import Hero from "@/components/sections/Hero";
+import HowItWorks from "@/components/sections/HowItWorks";
 import { WhatIs } from "@/components/sections/WhatIs";
 import { ChallengesSolutions } from "@/components/sections/ChallengesSolutions";
 import { CoreSolutions } from "@/components/sections/CoreSolutions";
@@ -14,6 +16,8 @@ export default function Home() {
     <div className="min-h-screen">
       <Navbar />
       <main>
+        <Hero />
+        <HowItWorks />
         <WhatIs />
         <ChallengesSolutions />
         <CoreSolutions />
