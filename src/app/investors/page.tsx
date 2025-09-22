@@ -6,18 +6,10 @@ import InvestorForm from "@/components/InvestorForm";
 
 /**
  * Investors page with Calendly + teaser pack + request form.
+ * Server Component (no event handlers) so it can prerender cleanly.
  */
 export default function InvestorsPage() {
   const teaserHref = absoluteUrl("/pack/neurolect-investor-pack.pdf");
-
-  const onError = (err: unknown) => {
-    // Use this in dev so eslint doesn’t complain about an unused variable.
-    if (process.env.NODE_ENV !== "production") {
-      // acceptable in dev; remove if you want silent failure
-      console.error("[Calendly iframe] load error:", err);
-    }
-  };
-
   const calendlySrc =
     SITE.calendly && SITE.calendly.length > 0 ? SITE.calendly : "about:blank";
 
@@ -36,7 +28,8 @@ export default function InvestorsPage() {
               title="Calendly"
               src={calendlySrc}
               className="h-full w-full rounded-lg"
-              onError={(e) => onError((e as unknown) ?? new Error("Calendly failed to load"))}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
           {calendlySrc === "about:blank" && (
