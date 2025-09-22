@@ -36,13 +36,17 @@ async function persistWithSupabase(data: InvestorInput): Promise<void> {
   const service = process.env.SUPABASE_SERVICE_ROLE;
 
   // If no URL or key provided, skip persistence (safe in CI/build)
-  if (!url || !(anon || service)) {
+  if (typeof url !== "string" || (!anon && !service)) {
     return;
   }
 
+  // Narrow to concrete strings before creating the client
+  const supabaseUrl: string = url;
+  const supabaseKey: string = (service ?? anon)!;
+
   // Lazy import and client creation INSIDE function only when envs exist
   const { createClient } = await import("@supabase/supabase-js");
-  const client = createClient(url, service ?? anon);
+  const client = createClient(supabaseUrl, supabaseKey);
 
   // Create table `investors` with columns (name, email, company, message, created_at) in your DB.
   const { error } = await client.from("investors").insert({
@@ -54,7 +58,6 @@ async function persistWithSupabase(data: InvestorInput): Promise<void> {
 
   if (error) {
     // Surface but don't fail the request
-    // eslint-disable-next-line no-console
     console.error("[/api/investor] supabase insert error:", error.message);
   }
 }
