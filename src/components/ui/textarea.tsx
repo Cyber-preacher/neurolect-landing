@@ -3,8 +3,8 @@
 
 import * as React from "react";
 
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> { }
+// Use a concrete type instead of an empty interface that merely extends another type.
+export type TextareaProps = React.ComponentPropsWithoutRef<"textarea">;
 
 /**
  * Shadcn-style Textarea with forwardRef.

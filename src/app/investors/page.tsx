@@ -12,7 +12,7 @@ export default function InvestorsPage() {
 
   const onError = (err: unknown) => {
     if (process.env.NODE_ENV !== "production") {
-      // eslint rule stays happy because value is used:
+      // use the value so eslint doesn’t warn; no disable directives needed
       // eslint-disable-next-line no-console
       console.error("[Calendly iframe] load error:", err);
     }
