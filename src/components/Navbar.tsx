@@ -1,16 +1,9 @@
-// src/components/Navbar.tsx
 "use client";
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { PRIMARY_NAV, MORE_NAV, CTA_NAV } from "@/lib/nav";
-
-declare global {
-  interface Window {
-    plausible?: (event: string, options?: { props?: Record<string, unknown> }) => void;
-  }
-}
 
 function cx(...arr: Array<string | false | null | undefined>) {
   return arr.filter(Boolean).join(" ");
@@ -32,8 +25,9 @@ export default function Navbar() {
 
   // Plausible helper (no-op if not loaded)
   const track = (name: string) => {
-    if (typeof window !== "undefined" && typeof window.plausible === "function") {
-      window.plausible(name);
+    if (typeof window !== "undefined") {
+      const w = window as any;
+      if (typeof w.plausible === "function") w.plausible(name);
     }
   };
 
