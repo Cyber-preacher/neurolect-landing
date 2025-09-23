@@ -40,6 +40,13 @@ function getUTMFromSearch(search: string) {
   };
 }
 
+// Type guard to narrow JSON error responses without using `any`
+function hasError(obj: unknown): obj is { error: string } {
+  if (typeof obj !== "object" || obj === null) return false;
+  const rec = obj as Record<string, unknown>;
+  return typeof rec.error === "string";
+}
+
 export default function InvestorsForm() {
   // Anti-spam token
   const [token, setToken] = useState<string>("");
@@ -50,8 +57,9 @@ export default function InvestorsForm() {
         const r = await fetch("/api/anti-spam", { method: "POST" });
         if (!mounted) return;
         if (r.ok) {
-          const { token } = (await r.json()) as { token?: string };
-          if (token) setToken(token);
+          const json: unknown = await r.json();
+          const tok = (json as { token?: string }).token;
+          if (tok) setToken(tok);
         }
       } catch {
         // no-op; server still rate-limits/honeypot
@@ -104,8 +112,8 @@ export default function InvestorsForm() {
       });
 
       if (!r.ok) {
-        const body = await r.json().catch(() => ({}));
-        const msg = typeof (body as any)?.error === "string" ? (body as any).error : "Submission failed";
+        const body: unknown = await r.json().catch(() => ({}));
+        const msg = hasError(body) ? body.error : "Submission failed";
         setState({ status: "error", message: msg });
         return;
       }
@@ -198,9 +206,7 @@ export default function InvestorsForm() {
         </button>
 
         {state.status === "success" ? (
-          <span className="text-sm text-green-600">
-            Thanks — we’ll be in touch shortly.
-          </span>
+          <span className="text-sm text-green-600">Thanks — we’ll be in touch shortly.</span>
         ) : null}
         {state.status === "error" ? (
           <span className="text-sm text-destructive">{state.message}</span>
