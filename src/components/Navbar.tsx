@@ -9,6 +9,10 @@ function cx(...arr: Array<string | false | null | undefined>) {
   return arr.filter(Boolean).join(" ");
 }
 
+// Local, non-global type for Plausible on window (avoids declaration merging)
+type PlausibleFn = (event: string, options?: { props?: Record<string, unknown> }) => void;
+type PlausibleWin = Window & { plausible?: PlausibleFn };
+
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -26,8 +30,8 @@ export default function Navbar() {
   // Plausible helper (no-op if not loaded)
   const track = (name: string) => {
     if (typeof window !== "undefined") {
-      const w = window as any;
-      if (typeof w.plausible === "function") w.plausible(name);
+      const w = window as unknown as PlausibleWin;
+      w.plausible?.(name);
     }
   };
 
