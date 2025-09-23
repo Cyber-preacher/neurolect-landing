@@ -1,4 +1,4 @@
-// src/components/sections/TechStack.tsx
+﻿// src/components/sections/TechStack.tsx
 "use client";
 
 import * as React from "react";
@@ -7,7 +7,7 @@ import { COPY } from "@/lib/copy";
 
 /**
  * Normalizes COPY.tech.layers so it can be either:
- * - string[] (layer names only)  → { name: string, desc: "" }
+ * - string[] (layer names only)  â†’ { name: string, desc: "" }
  * - { name: string, desc: string }[]
  * - or even legacy { title, description }[]
  */
@@ -67,3 +67,4 @@ export default function TechStack() {
 
 // Optional named export if your page imports { TechStack }
 export { TechStack };
+

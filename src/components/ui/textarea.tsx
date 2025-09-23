@@ -1,4 +1,4 @@
-// src/components/ui/textarea.tsx
+﻿// src/components/ui/textarea.tsx
 "use client";
 
 import * as React from "react";
@@ -31,3 +31,4 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 Textarea.displayName = "Textarea";
 
 export default Textarea;
+

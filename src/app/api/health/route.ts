@@ -1,4 +1,4 @@
-// src/app/api/health/route.ts
+﻿// src/app/api/health/route.ts
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -10,3 +10,4 @@ export async function GET() {
     env: process.env.VERCEL ? "vercel" : "local",
   });
 }
+

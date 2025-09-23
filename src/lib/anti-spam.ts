@@ -1,4 +1,4 @@
-// src/lib/anti-spam.ts
+﻿// src/lib/anti-spam.ts
 import crypto from "crypto";
 import type { NextRequest } from "next/server";
 
@@ -108,3 +108,4 @@ export function allowByIp(
   ipHits.set(ipKey, kept);
   return kept.length <= maxReqs;
 }
+

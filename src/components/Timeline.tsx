@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 
 export type TimelineItem = { title: string; body?: React.ReactNode };
 
@@ -17,3 +17,4 @@ export const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => {
 };
 
 export default Timeline;
+

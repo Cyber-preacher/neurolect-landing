@@ -1,4 +1,4 @@
-// src/app/error.tsx
+﻿// src/app/error.tsx
 "use client";
 
 import * as React from "react";
@@ -22,7 +22,7 @@ export default function GlobalError({
     <main className="mx-auto flex min-h-[60svh] max-w-2xl flex-col items-start justify-center gap-6 px-4 py-16">
       <div className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs text-muted-foreground">
         <span className="inline-block h-2 w-2 rounded-full bg-red-500" />
-        500 — Something went wrong
+        500 â€” Something went wrong
       </div>
 
       <h1 className="text-4xl font-semibold tracking-tight">We hit a snag</h1>
@@ -64,3 +64,4 @@ export default function GlobalError({
     </main>
   );
 }
+

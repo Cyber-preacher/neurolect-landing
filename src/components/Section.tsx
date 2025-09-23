@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+﻿import { ReactNode } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 
 export function Section({ id, title, children }: { id?: string; title: string; children: ReactNode }) {
@@ -22,3 +22,4 @@ export function Feature({ title, children }: { title: string; children: ReactNod
     </Card>
   )
 }
+

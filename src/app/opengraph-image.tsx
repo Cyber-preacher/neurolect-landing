@@ -1,4 +1,4 @@
-import { ImageResponse } from "next/og";
+﻿import { ImageResponse } from "next/og";
 import { SITE } from "@/lib/site";
 
 // Route segment config
@@ -74,3 +74,4 @@ export default async function OGImage() {
     }
   );
 }
+

@@ -58,4 +58,19 @@ Notes:
 
 ## 7) Local dev vs Vercel
 
-- Local: prefer **Webpack** with
+- Local: prefer **Webpack** with setx NEXT_WEBPACK_USE_TURBOPACK 0
+
+new shell
+
+pnpm dev -p 3050
+
+- Vercel build uses Turbopack by default; safe for prod.
+
+## 8) Post-deploy checklist
+
+- [ ] `/` loads with correct metadata/Open Graph.
+- [ ] `/investors` shows Calendly (if `SITE.calendly` set) + teaser PDF link works.
+- [ ] `/api/investor` & `/api/lead` accept valid payloads; reject missing/invalid tokens.
+- [ ] `/privacy` and `/changelog` render.
+- [ ] `/api/health` returns `{ ok: true }`.
+- [ ] Lighthouse: SEO/Perf/A11y/Best ≥95 on mobile & desktop.

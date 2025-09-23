@@ -1,20 +1,26 @@
-import { type MetadataRoute } from "next";
+// src/app/sitemap.ts
+import { MetadataRoute } from "next";
 import { absoluteUrl } from "@/lib/site";
-import fs from "node:fs";
-import path from "node:path";
+
+const STATIC_ROUTES = [
+  "/",
+  "/how-it-works",
+  "/moat",
+  "/safety",
+  "/why-now",
+  "/investors",
+  "/team",
+  "/press",
+  "/changelog",
+  "/privacy",
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Known routes; add more as pages ship
-  const routes = ["/", "/investors", "/press"].filter((p) =>
-    fs.existsSync(path.join(process.cwd(), "src", "app", p.replace(/^\//, ""), "page.tsx"))
-  );
-
-  const now = new Date().toISOString();
-
-  return routes.map((r) => ({
-    url: absoluteUrl(r),
-    lastModified: now,
-    changeFrequency: r === "/" ? "weekly" : "monthly",
-    priority: r === "/" ? 1 : 0.6,
+  const lastModified = new Date();
+  return STATIC_ROUTES.map((path) => ({
+    url: absoluteUrl(path),
+    lastModified,
+    changeFrequency: path === "/" ? "daily" : "weekly",
+    priority: path === "/" ? 1.0 : 0.7,
   }));
 }

@@ -1,4 +1,4 @@
-export const BRAND = {
+﻿export const BRAND = {
   name: "Neurolect",
   tagline: "The universal OS for neuro-linguistic interaction.",
   description:
@@ -6,3 +6,4 @@ export const BRAND = {
   ctaPrimary: "Get early access",
   ctaSecondary: "Read the whitepaper",
 }
+

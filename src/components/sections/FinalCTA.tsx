@@ -1,4 +1,4 @@
-import { SectionShell } from "@/components/SectionShell";
+﻿import { SectionShell } from "@/components/SectionShell";
 import { COPY } from "@/lib/copy";
 
 function LeadFormStub() {
@@ -30,3 +30,4 @@ export function FinalCTA() {
     </SectionShell>
   );
 }
+

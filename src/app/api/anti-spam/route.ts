@@ -1,4 +1,4 @@
-// src/app/api/anti-spam/route.ts
+﻿// src/app/api/anti-spam/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { getClientKey, issueToken } from "@/lib/anti-spam";
 
@@ -11,3 +11,4 @@ export async function GET(req: NextRequest) {
   const payload = issueToken(key);
   return NextResponse.json({ ok: true, ...payload });
 }
+

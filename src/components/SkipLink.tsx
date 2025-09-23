@@ -1,4 +1,4 @@
-// src/components/SkipLink.tsx
+﻿// src/components/SkipLink.tsx
 "use client";
 import * as React from "react";
 
@@ -17,3 +17,4 @@ export default function SkipLink() {
     </a>
   );
 }
+

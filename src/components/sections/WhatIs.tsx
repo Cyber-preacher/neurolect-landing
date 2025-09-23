@@ -1,4 +1,4 @@
-import { SectionShell } from "@/components/SectionShell";
+﻿import { SectionShell } from "@/components/SectionShell";
 import { COPY } from "@/lib/copy";
 
 export function WhatIs() {
@@ -8,3 +8,4 @@ export function WhatIs() {
     </SectionShell>
   );
 }
+

@@ -1,4 +1,4 @@
-// src/app/investors/page.tsx
+﻿// src/app/investors/page.tsx
 import * as React from "react";
 import Link from "next/link";
 import { SITE, absoluteUrl } from "@/lib/site";
@@ -58,7 +58,7 @@ export default function InvestorsPage() {
       <section className="mt-8 rounded-xl border p-4">
         <h2 className="text-xl font-medium">Request Data Room</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Submit your details and we’ll follow up with access.
+          Submit your details and weâ€™ll follow up with access.
         </p>
         <div className="mt-4">
           <InvestorForm />
@@ -67,3 +67,4 @@ export default function InvestorsPage() {
     </main>
   );
 }
+

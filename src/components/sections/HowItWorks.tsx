@@ -66,17 +66,17 @@ function Diagram() {
       {/* 1. Signals */}
       <rect className="box" filter="url(#s)" x="40" y="40" width="220" height="90" />
       <text className="label" x="150" y="75" textAnchor="middle">Signals</text>
-      <text className="sub" x="150" y="98" textAnchor="middle">EEG • EMG • eye • speech • IMU</text>
+      <text className="sub" x="150" y="98" textAnchor="middle">EEG â€¢ EMG â€¢ eye â€¢ speech â€¢ IMU</text>
 
       {/* 2. Processing */}
       <rect className="box" filter="url(#s)" x="300" y="40" width="220" height="90" />
       <text className="label" x="410" y="75" textAnchor="middle">Processing</text>
-      <text className="sub" x="410" y="98" textAnchor="middle">denoise • features • alignment</text>
+      <text className="sub" x="410" y="98" textAnchor="middle">denoise â€¢ features â€¢ alignment</text>
 
       {/* 3. Intent Models */}
       <rect className="box" filter="url(#s)" x="560" y="40" width="220" height="90" />
       <text className="label" x="670" y="75" textAnchor="middle">Intent Models</text>
-      <text className="sub" x="670" y="98" textAnchor="middle">decoders • personalization</text>
+      <text className="sub" x="670" y="98" textAnchor="middle">decoders â€¢ personalization</text>
 
       {/* arrows top row */}
       <path className="arrow" d="M260,85 L300,85" />
@@ -85,7 +85,7 @@ function Diagram() {
       {/* 4. Policy Runtime */}
       <rect className="box" filter="url(#s)" x="150" y="210" width="520" height="110" />
       <text className="label" x="410" y="245" textAnchor="middle">Policy Runtime</text>
-      <text className="sub" x="410" y="268" textAnchor="middle">consent • scopes • rate limits • audit</text>
+      <text className="sub" x="410" y="268" textAnchor="middle">consent â€¢ scopes â€¢ rate limits â€¢ audit</text>
 
       {/* arrows down */}
       <path className="arrow" d="M670,130 C670,170 670,170 670,210" />
@@ -95,10 +95,11 @@ function Diagram() {
       {/* 5. SDKs & Apps */}
       <rect className="box" filter="url(#s)" x="40" y="380" width="740" height="90" />
       <text className="label" x="410" y="415" textAnchor="middle">SDKs & Apps</text>
-      <text className="sub" x="410" y="438" textAnchor="middle">TypeScript/Rust SDKs • simulators • reference apps</text>
+      <text className="sub" x="410" y="438" textAnchor="middle">TypeScript/Rust SDKs â€¢ simulators â€¢ reference apps</text>
 
       {/* arrows bottom */}
       <path className="arrow" d="M410,320 C410,360 410,360 410,380" />
     </svg>
   );
 }
+
