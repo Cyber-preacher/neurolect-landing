@@ -1,10 +1,16 @@
-﻿// src/components/Navbar.tsx
+// src/components/Navbar.tsx
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { PRIMARY_NAV, MORE_NAV, CTA_NAV } from "@/lib/nav";
+
+declare global {
+  interface Window {
+    plausible?: (event: string, options?: { props?: Record<string, unknown> }) => void;
+  }
+}
 
 function cx(...arr: Array<string | false | null | undefined>) {
   return arr.filter(Boolean).join(" ");
@@ -12,6 +18,7 @@ function cx(...arr: Array<string | false | null | undefined>) {
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const moreRef = useRef<HTMLDetailsElement>(null);
 
@@ -25,8 +32,15 @@ export default function Navbar() {
 
   // Plausible helper (no-op if not loaded)
   const track = (name: string) => {
-    // @ts-expect-error Plausible injected at runtime
-    if (typeof window !== "undefined" && window?.plausible) window.plausible(name);
+    if (typeof window !== "undefined" && typeof window.plausible === "function") {
+      window.plausible(name);
+    }
+  };
+
+  const toInvestors = () => {
+    track("nav.cta_investors.click");
+    const search = typeof window !== "undefined" ? window.location.search : "";
+    router.push(`/investors${search || ""}`);
   };
 
   return (
@@ -41,7 +55,7 @@ export default function Navbar() {
             >
               Neurolect
             </Link>
-            <span className="hidden md:inline text-sm text-muted-foreground">â€¢ BCI OS</span>
+            <span className="hidden md:inline text-sm text-muted-foreground">• BCI OS</span>
           </div>
 
           {/* Desktop nav */}
@@ -52,14 +66,16 @@ export default function Navbar() {
                 href={item.href}
                 className={cx(
                   "text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm px-1 py-0.5",
-                  isActive(item.href) ? "text-foreground font-medium underline underline-offset-4" : "text-foreground/70 hover:text-foreground/90"
+                  isActive(item.href)
+                    ? "text-foreground font-medium underline underline-offset-4"
+                    : "text-foreground/70 hover:text-foreground/90"
                 )}
               >
                 {item.label}
               </Link>
             ))}
 
-            {/* More â€” native details/summary keeps a11y simple */}
+            {/* More — native details/summary keeps a11y simple */}
             <details className="relative" ref={moreRef}>
               <summary className="list-none cursor-pointer select-none text-sm text-foreground/70 hover:text-foreground/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm px-1 py-0.5">
                 More
@@ -86,20 +102,20 @@ export default function Navbar() {
 
           {/* Right: Investors CTA + mobile toggle */}
           <div className="flex items-center gap-2">
-            <Link
-              href={CTA_NAV.href}
-              onClick={() => track("nav.cta_investors.click")}
+            <button
+              type="button"
+              onClick={toInvestors}
               className="hidden md:inline-flex rounded-2xl px-3.5 py-2 text-sm font-semibold shadow-sm border bg-primary text-primary-foreground hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {CTA_NAV.label}
-            </Link>
+            </button>
 
             <button
               aria-label="Open menu"
               className="md:hidden inline-flex items-center justify-center rounded-md p-2 border focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               onClick={() => setOpen(true)}
             >
-              â˜°
+              ☰
             </button>
           </div>
         </nav>
@@ -116,7 +132,7 @@ export default function Navbar() {
                 className="inline-flex items-center justify-center rounded-md p-2 border focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 onClick={() => setOpen(false)}
               >
-                âœ•
+                ✕
               </button>
             </div>
 
@@ -149,13 +165,13 @@ export default function Navbar() {
                 ))}
               </div>
 
-              <Link
-                href={CTA_NAV.href}
-                onClick={() => track("nav.cta_investors.click")}
+              <button
+                type="button"
+                onClick={toInvestors}
                 className="mt-3 inline-flex rounded-2xl px-3.5 py-2 text-base font-semibold shadow-sm border bg-primary text-primary-foreground hover:opacity-90"
               >
                 {CTA_NAV.label}
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -163,4 +179,3 @@ export default function Navbar() {
     </header>
   );
 }
-
