@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 
 export type SectionShellProps = {
   id?: string;
@@ -47,3 +47,4 @@ export const SectionShell: React.FC<SectionShellProps> = ({
 };
 
 export default SectionShell;
+

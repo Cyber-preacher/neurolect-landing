@@ -1,4 +1,4 @@
-import { type MetadataRoute } from "next";
+﻿import { type MetadataRoute } from "next";
 import { SITE, absoluteUrl } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
@@ -15,3 +15,4 @@ export default function robots(): MetadataRoute.Robots {
     host: base,
   };
 }
+

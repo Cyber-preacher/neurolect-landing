@@ -1,4 +1,4 @@
-// src/components/InvestorForm.tsx
+﻿// src/components/InvestorForm.tsx
 "use client";
 
 import * as React from "react";
@@ -124,7 +124,7 @@ export default function InvestorForm() {
       <div>
         <label className="mb-1 block text-sm font-medium">Message</label>
         <Textarea
-          placeholder="Tell us about your thesis and what you’d like to explore…"
+          placeholder="Tell us about your thesis and what youâ€™d like to exploreâ€¦"
           rows={6}
           {...register("message")}
         />
@@ -135,10 +135,10 @@ export default function InvestorForm() {
 
       <div className="flex items-center gap-3">
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Sending…" : "Request Access"}
+          {isSubmitting ? "Sendingâ€¦" : "Request Access"}
         </Button>
         {isSubmitSuccessful && server?.ok && (
-          <span className="text-sm text-green-600">Thanks! We’ll be in touch.</span>
+          <span className="text-sm text-green-600">Thanks! Weâ€™ll be in touch.</span>
         )}
         {server && !server.ok && (
           <span className="text-sm text-destructive">Error: {server.error}</span>
@@ -147,3 +147,4 @@ export default function InvestorForm() {
     </form>
   );
 }
+

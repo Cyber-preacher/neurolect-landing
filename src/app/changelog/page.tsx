@@ -1,4 +1,4 @@
-// src/app/changelog/page.tsx
+﻿// src/app/changelog/page.tsx
 import * as React from "react";
 import { COPY } from "@/lib/copy";
 
@@ -116,7 +116,7 @@ export default function ChangelogPage() {
                 <time dateTime={e.date} className="text-muted-foreground">
                   {e.date}
                 </time>{" "}
-                — {e.title}
+                â€” {e.title}
               </a>
             </li>
           ))}
@@ -151,3 +151,4 @@ export default function ChangelogPage() {
     </main>
   );
 }
+

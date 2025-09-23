@@ -1,4 +1,4 @@
-// src/lib/site.ts
+﻿// src/lib/site.ts
 /**
  * Central site metadata & helpers.
  * Extend cautiously; keep fields stable and public.
@@ -15,7 +15,7 @@ export type SiteConfig = {
 export const SITE: SiteConfig = {
   name: "Neurolect",
   description:
-    "Neurolect — the OS layer for Brain–Computer Interfaces: intent models, neurosignature schema, and a policy runtime for safe, reversible brain-to-device communication.",
+    "Neurolect â€” the OS layer for Brainâ€“Computer Interfaces: intent models, neurosignature schema, and a policy runtime for safe, reversible brain-to-device communication.",
   url: "https://neurolect.ai",
   twitter: "@neurolect",
   // If you have a Calendly, set it here or via env and map it in runtime code:
@@ -25,3 +25,4 @@ export const SITE: SiteConfig = {
 export function absoluteUrl(path: string): string {
   return new URL(path.startsWith("/") ? path : `/${path}`, SITE.url).toString();
 }
+

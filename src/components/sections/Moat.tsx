@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import SectionShell from "@/components/SectionShell";
 import { COPY } from "@/lib/copy";
@@ -33,7 +33,7 @@ export default function Moat() {
 }
 
 function MiniDiagram() {
-  // Simple layered motif – complements HowItWorks visually
+  // Simple layered motif â€“ complements HowItWorks visually
   return (
     <svg role="img" aria-label="Moat diagram" viewBox="0 0 520 360" className="w-full h-auto">
       <defs>
@@ -64,7 +64,7 @@ function MiniDiagram() {
 
       <rect className="box" filter="url(#d)" x="20" y="104" width="480" height="64" />
       <text className="title" x="260" y="132" textAnchor="middle">Policy Runtime</text>
-      <text className="sub" x="260" y="150" textAnchor="middle">consent • scopes • rate limits • audit</text>
+      <text className="sub" x="260" y="150" textAnchor="middle">consent â€¢ scopes â€¢ rate limits â€¢ audit</text>
 
       <rect className="box" filter="url(#d)" x="20" y="188" width="480" height="64" />
       <text className="title" x="260" y="216" textAnchor="middle">Hardware Drivers</text>
@@ -72,7 +72,7 @@ function MiniDiagram() {
 
       <rect className="box" filter="url(#d)" x="20" y="272" width="480" height="64" />
       <text className="title" x="260" y="300" textAnchor="middle">Evaluation Harness</text>
-      <text className="sub" x="260" y="318" textAnchor="middle">benchmarks • safety tests • red-team</text>
+      <text className="sub" x="260" y="318" textAnchor="middle">benchmarks â€¢ safety tests â€¢ red-team</text>
 
       {/* arrows */}
       <path className="arrow" d="M260,84 L260,104" />
@@ -81,3 +81,4 @@ function MiniDiagram() {
     </svg>
   );
 }
+

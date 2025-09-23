@@ -1,4 +1,4 @@
-// src/app/api/investor/route.ts
+﻿// src/app/api/investor/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import {
@@ -105,3 +105,4 @@ export async function POST(req: NextRequest) {
     return json(500, { ok: false, error: msg });
   }
 }
+

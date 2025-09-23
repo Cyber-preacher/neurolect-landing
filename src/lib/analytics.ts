@@ -1,4 +1,4 @@
-// src/lib/analytics.ts
+﻿// src/lib/analytics.ts
 /**
  * Type-safe wrapper for Plausible (or similar) custom events.
  */
@@ -36,3 +36,4 @@ export function track(eventName: string, props?: AnalyticsProps): void {
 
   window.plausible(eventName, props ? { props } : undefined);
 }
+

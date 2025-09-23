@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import SectionShell from "@/components/SectionShell";
 import { COPY } from "@/lib/copy";
@@ -52,3 +52,4 @@ function PolicyCard() {
     </div>
   );
 }
+

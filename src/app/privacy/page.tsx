@@ -1,4 +1,4 @@
-// src/app/privacy/page.tsx
+﻿// src/app/privacy/page.tsx
 import Link from "next/link";
 
 export const metadata = {
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
         <ul>
           <li>
             <strong>Access/Correction/Deletion:</strong> Email{" "}
-            <a href="mailto:invest@neurolect.ai">invest@neurolect.ai</a> and we’ll assist.
+            <a href="mailto:invest@neurolect.ai">invest@neurolect.ai</a> and weâ€™ll assist.
           </li>
           <li>
             <strong>Do Not Track:</strong> Our analytics are cookie-less and do not identify you.
@@ -96,15 +96,15 @@ export default function PrivacyPage() {
         <h2>Third-party services</h2>
         <ul>
           <li>
-            <strong>Plausible Analytics</strong> — cookie-less, aggregate analytics used to count
+            <strong>Plausible Analytics</strong> â€” cookie-less, aggregate analytics used to count
             visits and measure general usage.
           </li>
           <li>
-            <strong>Hosting/CI</strong> — our website is deployed on a cloud provider (e.g.,
+            <strong>Hosting/CI</strong> â€” our website is deployed on a cloud provider (e.g.,
             Vercel) that processes logs at the infrastructure level.
           </li>
           <li>
-            <strong>Optional Database</strong> — if configured, we use Supabase to store form
+            <strong>Optional Database</strong> â€” if configured, we use Supabase to store form
             submissions you explicitly send to us.
           </li>
         </ul>
@@ -117,8 +117,8 @@ export default function PrivacyPage() {
 
         <h2>Changes to this policy</h2>
         <p>
-          We may update this policy as our product and website evolve. We’ll change the “Last
-          updated” date above and, where appropriate, provide additional notice.
+          We may update this policy as our product and website evolve. Weâ€™ll change the â€œLast
+          updatedâ€ date above and, where appropriate, provide additional notice.
         </p>
 
         <hr />
@@ -132,3 +132,4 @@ export default function PrivacyPage() {
     </main>
   );
 }
+

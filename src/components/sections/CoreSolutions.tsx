@@ -1,4 +1,4 @@
-import { SectionShell } from "@/components/SectionShell";
+﻿import { SectionShell } from "@/components/SectionShell";
 import { COPY } from "@/lib/copy";
 
 export function CoreSolutions() {
@@ -14,3 +14,4 @@ export function CoreSolutions() {
     </SectionShell>
   );
 }
+

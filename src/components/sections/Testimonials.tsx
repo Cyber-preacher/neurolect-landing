@@ -1,4 +1,4 @@
-import { SectionShell } from "@/components/SectionShell";
+﻿import { SectionShell } from "@/components/SectionShell";
 import { COPY } from "@/lib/copy";
 
 export function Testimonials() {
@@ -10,12 +10,13 @@ export function Testimonials() {
     >
       <div className="grid gap-4 md:grid-cols-2">
         <div className="rounded-2xl border p-6 text-muted-foreground">
-          “Placeholder quote from partner.”
+          â€œPlaceholder quote from partner.â€
         </div>
         <div className="rounded-2xl border p-6 text-muted-foreground">
-          “Placeholder quote from researcher.”
+          â€œPlaceholder quote from researcher.â€
         </div>
       </div>
     </SectionShell>
   );
 }
+

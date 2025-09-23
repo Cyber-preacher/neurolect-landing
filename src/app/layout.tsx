@@ -1,7 +1,10 @@
+// src/app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
 import Analytics from "@/components/Analytics";
+import Navbar from "@/components/Navbar";
 import { SITE, absoluteUrl } from "@/lib/site";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -38,9 +41,7 @@ export const metadata: Metadata = {
     images: [absoluteUrl("/api/og")],
   },
   icons: {
-    icon: [
-      { url: "/favicon.ico" },
-    ],
+    icon: [{ url: "/favicon.ico" }],
     apple: [{ url: "/apple-touch-icon.png" }],
   },
 };
@@ -49,7 +50,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        {children}
+        {/* A11y: keyboard users can jump past the nav */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only fixed left-2 top-2 z-[1000] rounded border bg-background px-3 py-1"
+        >
+          Skip to content
+        </a>
+        {/* Main content region */}
+        <Navbar />
+        <main id="main">{children}</main>
+
         <Analytics />
       </body>
     </html>

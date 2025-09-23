@@ -1,4 +1,4 @@
-// src/components/sections/Section.tsx
+﻿// src/components/sections/Section.tsx
 "use client";
 
 import * as React from "react";
@@ -42,3 +42,4 @@ export default function Section({
     </section>
   );
 }
+

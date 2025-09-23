@@ -1,4 +1,4 @@
-import { SectionShell } from "@/components/SectionShell";
+﻿import { SectionShell } from "@/components/SectionShell";
 import { COPY } from "@/lib/copy";
 
 export function Team() {
@@ -15,3 +15,4 @@ export function Team() {
     </SectionShell>
   );
 }
+
