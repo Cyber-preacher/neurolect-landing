@@ -1,0 +1,63 @@
+/* src/app/theme.css */
+/* Neurolect — Light “studio” palette, NO GRID. Neon strings supplied by a component. */
+
+:root {
+  --nl-cyan: hsl(186 92% 55%);
+  --nl-pink: hsl(313 82% 66%);
+  --nl-bg: hsl(195 70% 97%); /* soft teal paper */
+  --nl-bg-2: hsl(195 62% 95%); /* subtle section tint */
+
+  --nl-radius: 16px;
+  --nl-shadow: 0 8px 22px hsl(204 40% 30% / 0.08), 0 2px 6px hsl(204 40% 20% / 0.06);
+}
+
+/* Light, airy background – no grid */
+.bg-root {
+  background-color: var(--nl-bg);
+  background-image: radial-gradient(48rem 48rem at 15% -10%, color-mix(in oklab, var(--nl-cyan), transparent 86%), transparent 86%), radial-gradient(42rem 42rem at 110% 10%, color-mix(in oklab, var(--nl-pink), transparent 90%), transparent 90%);
+  background-size: auto, auto;
+  background-attachment: fixed;
+}
+
+/* Glassy cards */
+.surface {
+  background: color-mix(in oklab, white 86%, transparent);
+  backdrop-filter: saturate(1.1) blur(8px);
+  -webkit-backdrop-filter: saturate(1.1) blur(8px);
+  border: 1px solid hsl(204 12% 20% / 0.08);
+  border-radius: var(--nl-radius);
+  box-shadow: var(--nl-shadow);
+}
+
+.surface-md {
+  padding: 1.25rem;
+}
+
+.surface-lg {
+  padding: 1.5rem;
+}
+
+.surface-xl {
+  padding: 2rem;
+}
+
+/* Accent headline */
+.gradient-text {
+  background: linear-gradient(90deg, var(--nl-cyan), var(--nl-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Chips */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .375rem;
+  padding: .25rem .6rem;
+  border-radius: 999px;
+  border: 1px solid hsl(204 12% 20% / 0.10);
+  background: color-mix(in oklab, white 92%, transparent);
+  font-size: .75rem;
+  line-height: 1rem;
+}

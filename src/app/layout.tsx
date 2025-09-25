@@ -1,17 +1,15 @@
 // src/app/layout.tsx
 import "./globals.css";
+import "./theme.css";
 import type { Metadata } from "next";
 import Analytics from "@/components/Analytics";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { SITE, absoluteUrl } from "@/lib/site";
+import Navbar from "@/components/Navbar";
+import NeonStrings from "@/components/brand/NeonStrings";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
-  title: {
-    default: SITE.name,
-    template: `%s — ${SITE.name}`,
-  },
+  title: { default: SITE.name, template: `%s — ${SITE.name}` },
   description: SITE.description,
   applicationName: SITE.name,
   alternates: { canonical: absoluteUrl("/") },
@@ -37,13 +35,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
-        <a href="#main" className="sr-only focus:not-sr-only fixed left-2 top-2 z-[1000] rounded border bg-background px-3 py-1">
-          Skip to content
-        </a>
+      <body className="bg-root min-h-dvh antialiased">
+        {/* Neon strings: fixed under everything */}
+        <NeonStrings className="fixed inset-0 -z-10" density={11} speed={34} intensity={0.22} />
+
         <Navbar />
-        <main id="main">{children}</main>
-        <Footer />
+        {children}
         <Analytics />
       </body>
     </html>

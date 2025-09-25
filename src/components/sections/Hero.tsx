@@ -3,103 +3,56 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section
-      aria-labelledby="hero-title"
-      className="relative overflow-hidden border-b"
-    >
-      {/* Subtle background / visual */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10"
-      >
-        <div className="absolute -top-32 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full opacity-20 blur-3xl"
-          style={{ background: "radial-gradient(60% 60% at 50% 50%, hsl(260 100% 60% / .40), transparent 70%)" }}
-        />
-        <svg
-          className="absolute bottom-[-3rem] right-[-3rem] h-[18rem] w-[18rem] opacity-25"
-          viewBox="0 0 200 200"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0%" stopColor="currentColor" />
-              <stop offset="100%" stopColor="currentColor" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M10 120 C40 80, 80 80, 110 120 S180 160, 190 120"
-            stroke="currentColor"
-            strokeWidth="2"
-            fill="none"
-          />
-          <circle cx="110" cy="120" r="3" fill="currentColor" />
-          <circle cx="190" cy="120" r="3" fill="currentColor" />
-        </svg>
-      </div>
+    <section className="relative overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-16 grid items-center gap-10 md:grid-cols-2">
+        {/* Left copy */}
+        <div>
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">
+            <span className="gradient-text">Neurolect</span> — The Universal OS for Brain–Computer Interfaces
+          </h1>
+          <p className="mt-5 text-lg text-muted-foreground max-w-prose">
+            Connect, communicate, and control technology directly from your mind.
+            A calm, safe pathway from neural activity to intent—built for people and products.
+          </p>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-        <div className="grid items-center gap-10 md:grid-cols-2">
-          {/* Copy block */}
-          <div>
-            <h1
-              id="hero-title"
-              className="text-4xl font-semibold tracking-tight sm:text-5xl"
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/investors"
+              className="inline-flex items-center rounded-2xl px-4 py-2 text-sm font-semibold shadow-sm border bg-primary text-primary-foreground hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-              Neurolect — The Universal OS for Brain–Computer Interfaces
-            </h1>
-
-            <p className="mt-4 text-lg text-muted-foreground">
-              Connect, communicate, and control technology directly from your mind.
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/investors"
-                className="inline-flex items-center rounded-2xl px-4 py-2 text-sm font-semibold shadow-sm border bg-primary text-primary-foreground hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                Investors
-              </Link>
-              <Link
-                href="/pack/neurolect-investor-pack.pdf"
-                className="inline-flex items-center rounded-2xl px-4 py-2 text-sm font-semibold border hover:bg-accent hover:text-accent-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                Download teaser
-              </Link>
-            </div>
-
-            <p className="sr-only" id="hero-visual-desc">
-              Abstract brain-to-device visual showing signal flow from neural activity to applications.
-            </p>
+              Investors
+            </Link>
+            <Link
+              href="/pack/neurolect-investor-pack.pdf"
+              className="inline-flex items-center rounded-2xl px-4 py-2 text-sm font-semibold border hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Download teaser
+            </Link>
           </div>
 
-          {/* Visual block (purely decorative; described above) */}
-          <div
-            className="relative aspect-[4/3] rounded-3xl border bg-gradient-to-tr from-background via-muted to-background"
-            role="img"
-            aria-labelledby="hero-visual-desc"
-          >
-            <svg
-              className="absolute inset-0 h-full w-full"
-              viewBox="0 0 800 600"
-              xmlns="http://www.w3.org/2000/svg"
+          <div className="mt-6">
+            <span className="chip">Private by design</span>
+            <span className="chip ml-2">Consent &amp; revocation</span>
+          </div>
+        </div>
+
+        {/* Right: looped video */}
+        <div className="relative aspect-[4/5] w-full">
+          <div className="absolute inset-0 overflow-hidden rounded-[1.25rem] surface surface-xl">
+            <video
+              className="h-full w-full object-cover"
+              autoPlay
+              muted
+              playsInline
+              loop
+              preload="auto"
+              aria-label="Neon light trails encircling a calm face—symbolizing neural intent"
             >
-              <defs>
-                <linearGradient id="wire" x1="0" x2="1" y1="0" y2="0">
-                  <stop offset="0%" stopColor="currentColor" />
-                  <stop offset="100%" stopColor="currentColor" />
-                </linearGradient>
-              </defs>
-              <g opacity="0.35">
-                <path d="M80 420 C200 380, 260 300, 340 320 S520 420, 720 360"
-                  stroke="currentColor" strokeWidth="2" fill="none" />
-                <circle cx="340" cy="320" r="5" fill="currentColor" />
-                <circle cx="720" cy="360" r="5" fill="currentColor" />
-              </g>
-              <g opacity="0.2">
-                <circle cx="160" cy="220" r="28" fill="currentColor" />
-                <rect x="560" y="220" width="70" height="42" rx="9" fill="currentColor" />
-              </g>
-            </svg>
+              <source src="/media/hero-loop-desktop.webm" type="video/webm" />
+              <source src="/media/hero-loop-desktop.mp4" type="video/mp4" />
+            </video>
+            {/* Light veil for copy contrast */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/40 via-white/10 to-transparent" />
           </div>
         </div>
       </div>
