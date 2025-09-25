@@ -1,211 +1,154 @@
-// src/components/investors/InvestorsForm.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 
+/** Client-side schema to keep inputs clean before POSTing */
 const InvestorSchema = z.object({
-  name: z.string().min(2, "Please enter your full name"),
-  email: z.string().email("Enter a valid email"),
-  firm: z.string().min(2, "Enter your firm (or individual)"),
-  note: z.string().max(800, "Keep it under 800 characters").optional().or(z.literal("")),
-  token: z.string().optional(), // anti-spam token (server will verify; optional)
-  utm: z
-    .object({
-      source: z.string().optional(),
-      medium: z.string().optional(),
-      campaign: z.string().optional(),
-      content: z.string().optional(),
-      term: z.string().optional(),
-    })
-    .partial()
-    .optional(),
+  name: z.string().min(2, "Please enter your full name."),
+  email: z.string().email("Enter a valid email."),
+  firm: z.string().optional(),
+  note: z.string().max(1000, "Message is too long.").optional(),
 });
 
-type FormState =
-  | { status: "idle" }
-  | { status: "submitting" }
-  | { status: "success" }
-  | { status: "error"; message: string }
-  | { status: "invalid"; errors: Record<string, string> };
+type InvestorInput = z.infer<typeof InvestorSchema>;
 
-function getUTMFromSearch(search: string) {
-  const p = new URLSearchParams(search);
-  return {
-    source: p.get("utm_source") ?? undefined,
-    medium: p.get("utm_medium") ?? undefined,
-    campaign: p.get("utm_campaign") ?? undefined,
-    content: p.get("utm_content") ?? undefined,
-    term: p.get("utm_term") ?? undefined,
-  };
+function getErrorMessage(err: unknown): string {
+  if (err instanceof Error) return err.message;
+  if (typeof err === "string") return err;
+  try {
+    return JSON.stringify(err);
+  } catch {
+    return "Unknown error";
+  }
 }
 
-export default function InvestorsForm() {
-  // Anti-spam token
-  const [token, setToken] = useState<string>("");
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      try {
-        const r = await fetch("/api/anti-spam", { method: "POST" });
-        if (!mounted) return;
-        if (r.ok) {
-          const { token } = (await r.json()) as { token?: string };
-          if (token) setToken(token);
-        }
-      } catch {
-        // no-op; server still rate-limits/honeypot
-      }
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, []);
+export default function InvestorForm() {
+  const [form, setForm] = useState<InvestorInput>({ name: "", email: "", firm: "", note: "" });
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [error, setError] = useState<string>("");
 
-  // UTM capture
-  const utm = useMemo(
-    () => (typeof window !== "undefined" ? getUTMFromSearch(window.location.search) : {}),
-    []
-  );
-
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    firm: "",
-    note: "",
-  });
-  const [state, setState] = useState<FormState>({ status: "idle" });
+  const onChange =
+    (key: keyof InvestorInput) =>
+      (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+        setForm((f) => ({ ...f, [key]: e.target.value }));
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setState({ status: "submitting" });
+    setStatus("submitting");
+    setError("");
 
-    const parsed = InvestorSchema.safeParse({
-      ...form,
-      token,
-      utm,
-    });
-
+    const parsed = InvestorSchema.safeParse(form);
     if (!parsed.success) {
-      const errors: Record<string, string> = {};
-      parsed.error.issues.forEach((i) => {
-        const key = i.path.join(".");
-        errors[key] = i.message;
-      });
-      setState({ status: "invalid", errors });
+      setStatus("error");
+      setError(parsed.error.issues[0]?.message ?? "Invalid input.");
       return;
     }
 
     try {
-      const r = await fetch("/api/investor", {
+      const res = await fetch("/api/investor", {
         method: "POST",
-        headers: { "content-type": "application/json; charset=utf-8" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsed.data),
       });
 
-      if (!r.ok) {
-        const body = await r.json().catch(() => ({}));
-        const msg = typeof (body as any)?.error === "string" ? (body as any).error : "Submission failed";
-        setState({ status: "error", message: msg });
-        return;
+      // Attempt to read JSON without assuming a type
+      let payload: unknown = undefined;
+      try {
+        payload = await res.json();
+      } catch {
+        /* ignore non-JSON responses */
       }
-      setState({ status: "success" });
-      setForm({ name: "", email: "", firm: "", note: "" });
-    } catch {
-      setState({ status: "error", message: "Network error" });
+
+      if (!res.ok) {
+        let message = res.statusText || "Request failed";
+        if (payload && typeof payload === "object") {
+          const obj = payload as { error?: unknown; message?: unknown };
+          if (typeof obj.error === "string") message = obj.error;
+          else if (typeof obj.message === "string") message = obj.message;
+        }
+        throw new Error(message);
+      }
+
+      // success path: accept either {ok:true} or empty 2xx
+      setStatus("success");
+    } catch (err: unknown) {
+      setStatus("error");
+      setError(getErrorMessage(err));
     }
   }
 
   return (
-    <form className="grid gap-4 max-w-xl" onSubmit={onSubmit} noValidate>
-      {/* Hidden anti-spam token */}
-      <input type="hidden" name="token" value={token} />
-
+    <form onSubmit={onSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium" htmlFor="name">Full name</label>
+        <label className="block text-sm font-medium">Name</label>
         <input
-          id="name"
-          name="name"
+          required
           value={form.name}
-          onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-          className="mt-1 w-full rounded-lg border px-3 py-2"
+          onChange={onChange("name")}
+          className="mt-1 w-full rounded-md border px-3 py-2"
           placeholder="Ada Lovelace"
+          name="name"
           autoComplete="name"
-          required
         />
-        {state.status === "invalid" && state.errors?.name ? (
-          <p className="mt-1 text-sm text-destructive">{state.errors.name}</p>
-        ) : null}
       </div>
 
       <div>
-        <label className="block text-sm font-medium" htmlFor="email">Work email</label>
+        <label className="block text-sm font-medium">Email</label>
         <input
-          id="email"
-          name="email"
+          required
           value={form.email}
-          onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-          className="mt-1 w-full rounded-lg border px-3 py-2"
+          onChange={onChange("email")}
+          type="email"
+          className="mt-1 w-full rounded-md border px-3 py-2"
           placeholder="you@firm.com"
-          inputMode="email"
+          name="email"
           autoComplete="email"
-          required
         />
-        {state.status === "invalid" && state.errors?.email ? (
-          <p className="mt-1 text-sm text-destructive">{state.errors.email}</p>
-        ) : null}
       </div>
 
       <div>
-        <label className="block text-sm font-medium" htmlFor="firm">Firm</label>
+        <label className="block text-sm font-medium">Firm (optional)</label>
         <input
-          id="firm"
+          value={form.firm ?? ""}
+          onChange={onChange("firm")}
+          className="mt-1 w-full rounded-md border px-3 py-2"
+          placeholder="Atlas Ventures"
           name="firm"
-          value={form.firm}
-          onChange={(e) => setForm((f) => ({ ...f, firm: e.target.value }))}
-          className="mt-1 w-full rounded-lg border px-3 py-2"
-          placeholder="Alpha Capital"
-          required
+          autoComplete="organization"
         />
-        {state.status === "invalid" && state.errors?.firm ? (
-          <p className="mt-1 text-sm text-destructive">{state.errors.firm}</p>
-        ) : null}
       </div>
 
       <div>
-        <label className="block text-sm font-medium" htmlFor="note">Note (optional)</label>
+        <label className="block text-sm font-medium">Message (optional)</label>
         <textarea
-          id="note"
-          name="note"
-          value={form.note}
-          onChange={(e) => setForm((f) => ({ ...f, note: e.target.value }))}
-          className="mt-1 w-full rounded-lg border px-3 py-2"
+          value={form.note ?? ""}
+          onChange={onChange("note")}
+          className="mt-1 w-full rounded-md border px-3 py-2"
           rows={4}
-          placeholder="What are you most curious about?"
+          placeholder="A line about your interest or timeline…"
+          name="note"
         />
-        {state.status === "invalid" && state.errors?.note ? (
-          <p className="mt-1 text-sm text-destructive">{state.errors.note}</p>
-        ) : null}
       </div>
 
-      <div className="flex items-center gap-3">
-        <button
-          type="submit"
-          disabled={state.status === "submitting"}
-          className="inline-flex rounded-2xl px-3.5 py-2 text-sm font-semibold shadow-sm border bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-60"
-        >
-          {state.status === "submitting" ? "Sending…" : "Request access"}
-        </button>
+      {status === "error" && (
+        <p className="text-sm text-red-600" role="alert">
+          {error}
+        </p>
+      )}
+      {status === "success" && (
+        <p className="text-sm text-emerald-600" role="status">
+          Thanks — we’ll be in touch shortly.
+        </p>
+      )}
 
-        {state.status === "success" ? (
-          <span className="text-sm text-green-600">
-            Thanks — we’ll be in touch shortly.
-          </span>
-        ) : null}
-        {state.status === "error" ? (
-          <span className="text-sm text-destructive">{state.message}</span>
-        ) : null}
-      </div>
+      <button
+        type="submit"
+        disabled={status === "submitting"}
+        className="rounded-2xl px-4 py-2 text-sm font-semibold shadow-sm border bg-primary text-primary-foreground disabled:opacity-60"
+      >
+        {status === "submitting" ? "Sending…" : "Request intro"}
+      </button>
     </form>
   );
 }
