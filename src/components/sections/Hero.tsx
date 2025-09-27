@@ -36,11 +36,11 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right: looped video */}
+        {/* Right: looped video — no white surface, no padding; clipped to rounded corners */}
         <div className="relative aspect-[4/5] w-full">
-          <div className="absolute inset-0 overflow-hidden rounded-[1.25rem] surface surface-xl">
+          <div className="absolute inset-0 overflow-hidden rounded-[1.25rem]">
             <video
-              className="h-full w-full object-cover"
+              className="block h-full w-full object-cover"
               autoPlay
               muted
               playsInline
@@ -51,8 +51,8 @@ export default function Hero() {
               <source src="/media/hero-loop-desktop.webm" type="video/webm" />
               <source src="/media/hero-loop-desktop.mp4" type="video/mp4" />
             </video>
-            {/* Light veil for copy contrast */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/40 via-white/10 to-transparent" />
+            {/* Optional very light veil for legibility (remove if you prefer pure) */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/20 via-white/5 to-transparent" />
           </div>
         </div>
       </div>
