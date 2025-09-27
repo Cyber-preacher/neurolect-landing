@@ -1,24 +1,26 @@
-﻿"use client";
-
-import SectionShell from "@/components/SectionShell";
-import { COPY } from "@/lib/copy";
+// src/components/sections/WhyNow.tsx
+import Tile from "@/components/ui/Tile";
 
 export default function WhyNow() {
+  const bullets = [
+    { title: "Hardware Maturity", desc: "Commodity EEG, new implant generations, and better dry electrode stacks." },
+    { title: "AI Personalization", desc: "Foundation models enable low-shot personalization of intent and affect." },
+    { title: "Privacy Momentum", desc: "Cultural and regulatory pressure favors private-by-default neural tech." },
+    { title: "Cost Curves", desc: "Compute + sensors get cheaper yearly, enabling accessible brain apps." },
+  ];
+
   return (
-    <SectionShell id="why-now" title={COPY.whyNow.title} subtitle={COPY.whyNow.sub}>
-      <div className="grid gap-4 md:grid-cols-2">
-        {COPY.whyNow.bullets.map((b, i) => (
-          <div key={i} className="rounded-2xl border p-5">
-            <h3 className="text-sm font-semibold">{b.title}</h3>
-            <p className="mt-1 text-sm text-muted-foreground">{b.body}</p>
-          </div>
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+      <header className="mb-6">
+        <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">Why now</h2>
+        <p className="mt-2 text-sm text-muted-foreground">Converging trends make Neurolect inevitable.</p>
+      </header>
+
+      <div className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-4">
+        {bullets.map((b) => (
+          <Tile key={b.title} title={b.title} desc={b.desc} />
         ))}
       </div>
-
-      {COPY.whyNow.note && (
-        <p className="mt-6 text-xs text-muted-foreground">{COPY.whyNow.note}</p>
-      )}
-    </SectionShell>
+    </section>
   );
 }
-
