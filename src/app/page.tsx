@@ -2,7 +2,22 @@
 import Link from "next/link";
 import Hero from "@/components/sections/Hero";
 import Traction from "@/components/sections/Traction";
-import Tile from "@/components/ui/Tile";
+
+function Card({
+  title,
+  desc,
+  href,
+}: { title: string; desc: string; href: string }) {
+  return (
+    <article className="rounded-2xl border bg-background/50 backdrop-blur p-5 h-full flex flex-col">
+      <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
+      <p className="mt-2 text-sm text-muted-foreground flex-1">{desc}</p>
+      <div className="mt-4">
+        <Link href={href} className="underline underline-offset-4">Learn more →</Link>
+      </div>
+    </article>
+  );
+}
 
 export default function HomePage() {
   return (
@@ -10,30 +25,26 @@ export default function HomePage() {
       <Hero />
 
       {/* Minis grid */}
-      <section className="mt-12 grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-4">
-        <Tile
+      <section className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Card
           title="How it works"
-          desc="Signals → Processing → Intent Models → Policy Runtime → SDKs. Diagram-first overview."
+          desc="Neurolect translates rich neural signals—inner-speech and emotion—into intent tokens, routes them through a policy engine, and executes across devices via HAL + SDKs."
           href="/how-it-works"
-          badge="Architecture"
         />
-        <Tile
+        <Card
           title="Moat & IP"
-          desc="Neurosignature schema, policy engine, drivers, and an eval harness form a durable moat."
+          desc="Neurosignature schema for identity, a cross-device policy runtime, a catalog of hardware drivers, and an eval harness for linguo-emotional accuracy."
           href="/moat"
-          badge="Advantage"
         />
-        <Tile
+        <Card
           title="Safety & Ethics"
-          desc="Consent + revocation by default, strict rate limits, stimulation guardrails, and red-teaming."
+          desc="Consent and revocation by default, on-device preference, rate limits, stimulation guardrails, and data rights anchored to your neurosignature."
           href="/safety"
-          badge="Safety"
         />
-        <Tile
+        <Card
           title="Why now"
-          desc="Hardware maturity, AI personalization, privacy norms, and falling cost curves converge now."
+          desc="BCI hardware maturity, foundation-model personalization, privacy expectations, and falling inference costs converge to make Neurolect inevitable."
           href="/why-now"
-          badge="Thesis"
         />
       </section>
 
@@ -45,7 +56,9 @@ export default function HomePage() {
       {/* Footer CTA strip */}
       <section className="mt-12 mb-8 flex flex-col items-center gap-3 text-center">
         <h2 className="text-xl font-semibold tracking-tight">Ready to talk?</h2>
-        <p className="text-sm text-muted-foreground">Book a call and grab the teaser pack.</p>
+        <p className="text-sm text-muted-foreground">
+          Book a call and grab the teaser pack.
+        </p>
         <div className="flex gap-3">
           <Link href="/investors" className="rounded-2xl px-3.5 py-2 text-sm font-semibold shadow-sm border bg-primary text-primary-foreground hover:opacity-90">
             Investors

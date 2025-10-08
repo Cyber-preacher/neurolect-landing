@@ -1,293 +1,373 @@
-﻿const COPY = {
-  nav: [
-    { href: "#about", label: "What is Neurolect" },
-    { href: "#how-it-works", label: "How it works" },
-    { href: "#moat", label: "Moat & IP" },
-    { href: "#safety", label: "Safety & Ethics" },
-    { href: "#why-now", label: "Why now" },
-    { href: "#solutions", label: "Challenges & Solutions" },
-    { href: "#advantages", label: "Core Solutions" },
-    { href: "#use-cases", label: "Use cases" },
-    { href: "#technology", label: "Tech stack" },
-    { href: "#roadmap", label: "Roadmap" },
-    { href: "#traction", label: "Traction" },
-    { href: "#team", label: "Team" },
-    { href: "#recognition", label: "Recognition" },
-    { href: "#contact", label: "Contact" },
-  ],
+// src/lib/copy.ts
+export const SITE = {
+  name: "Neurolect",
+  url: "https://neurolect.ai",
+  twitter: "@neurolect",
+  tagline: "Operating System for Cyber-Brains",
+  description:
+    "Neurolect is a hardware-agnostic OS and data format for brain-computer interfaces. It translates neural signals into linguo-emotional data, standardizes device integration, and enables a new class of BrainApps.",
+};
+
+export const COPY = {
+  /** Used by <WhatIs/> */
+  whatIs: {
+    title: "What is Neurolect?",
+    body:
+      "Neurolect is a hardware-agnostic operating system for brain–computer interfaces. It translates neural activity into structured, linguo-emotional data and routes trusted intent through a policy-aware runtime into apps and devices via a hardware abstraction layer (HAL). Developers build BrainApps with stable tokens and SDKs, while users remain in control through consent, revocation, and privacy-first defaults. Neurosignatures are optional and used only as a supplementary factor within multi-factor authentication.",
+  },
+
+  /** Used by <ChallengesSolutions/> */
+  challenges: {
+    title: "Challenges Neurolect Addresses",
+    items: [
+      {
+        title: "Communication barriers",
+        problem:
+          "Neural interfaces today struggle to convey nuanced intent and affect, leading to brittle commands and shallow expressiveness.",
+        solution:
+          "Neurolect maps neural activity to linguo-emotional tokens (intent + basic affect). Apps receive richer signals, improving clarity and usability.",
+      },
+      {
+        title: "Limited accessibility",
+        problem:
+          "Most systems assume specific motor or speech capabilities and require device-specific training.",
+        solution:
+          "A hardware-agnostic HAL plus stable tokens make BrainApps accessible across non-invasive and invasive devices with lighter onboarding.",
+      },
+      {
+        title: "Security & privacy",
+        problem:
+          "Raw neural data is intimate; many stacks lack consent primitives, revocation, or clear safety policy.",
+        solution:
+          "Consent & revocation by default, policy-gated actions, private-by-default processing, and neurosignatures used only as a supplementary factor.",
+      },
+      {
+        title: "Fragmented standards",
+        problem:
+          "BCI hardware and SDKs are incompatible, forcing one-off integrations and fragile demos.",
+        solution:
+          "Drivers + HAL unify device I/O; the eval harness and stable intent tokens let developers integrate once and run everywhere.",
+      },
+    ],
+  },
+
+  /** Used by <CoreSolutions/> */
+  core: {
+    title: "Core Solutions & Unique Advantages",
+    bullets: [
+      "Thought-based control — interact with apps and devices directly via decoded intent tokens.",
+      "Emotionally rich interactions — include basic affect to disambiguate and personalize actions.",
+      "Neurosignature security — a portable, privacy-preserving, supplementary factor for identity.",
+      "Universal compatibility — HAL + drivers make BrainApps hardware-agnostic (non-invasive to invasive).",
+      "BrainApps (BApps) — developer SDKs and stable schemas enable a new category of neural applications.",
+    ],
+  },
+
+  /** Used by <Roadmap/> */
+  roadmap: {
+    title: "Roadmap milestones",
+    phases: [
+      {
+        id: "phase-1",
+        when: "2025 H2",
+        title: "Phase 1 — Foundations",
+        achieved: true,
+        items: [
+          { label: "Signals & HAL for non-invasive EEG", status: "done" },
+          { label: "Linguo-Emotional Models v0 (narrow tasks)", status: "done" },
+          { label: "Policy Runtime (consent, revocation, rate limits)", status: "done" },
+          { label: "SDKs for BrainApps (input/state/feedback)", status: "done" },
+        ],
+      },
+      {
+        id: "phase-2",
+        when: "2026 H1",
+        title: "Phase 2 — Scale & Interop",
+        achieved: false,
+        items: [
+          { label: "Device drivers for additional EEG vendors", status: "planned" },
+          { label: "Eval harness: standardized tasks & datasets", status: "planned" },
+          { label: "Neurosignature schema (supplementary auth only)", status: "planned" },
+          { label: "BApps catalog (curated distribution)", status: "planned" },
+        ],
+      },
+      {
+        id: "phase-3",
+        when: "2026–2027",
+        title: "Phase 3 — Advanced IO",
+        achieved: false,
+        items: [
+          { label: "Higher-bandwidth decoding with partner devices", status: "planned" },
+          { label: "Closed-loop UX research under strict guardrails", status: "planned" },
+          { label: "Exploratory brain-to-brain protocols (no stimulation by default)", status: "planned" },
+        ],
+      },
+    ],
+    footnote:
+      "Dates are indicative. We ship constrained, useful experiences first; expand by evidence and safety reviews.",
+  },
+
+  /** Used by <TechStack/> */
+  tech: {
+    title: "Neurolect technology stack",
+    layers: [
+      {
+        name: "User Interaction",
+        items: [
+          { label: "BCI inputs", desc: "EEG/MEG/implants; multi-vendor device support via HAL." },
+          { label: "Feedback loops", desc: "Haptics/visual/audio; strictly no stimulation by default." },
+        ],
+      },
+      {
+        name: "Processing",
+        items: [
+          { label: "Signal prep", desc: "Filtering, artifact rejection, synchronization." },
+          { label: "Feature extraction", desc: "Time–frequency features and learned embeddings." },
+        ],
+      },
+      {
+        name: "AI & Translation",
+        items: [
+          { label: "Linguo-Emotional Models", desc: "Map activity to intent tokens + basic affect." },
+          { label: "Calibration", desc: "Short, guided tasks to personalize within safe bounds." },
+        ],
+      },
+      {
+        name: "Security & Identity",
+        items: [
+          { label: "Consent & revocation", desc: "Session-scoped permissions; one-tap revoke." },
+          { label: "Neurosignatures (optional)", desc: "Supplementary factor in MFA; privacy-preserving schema." },
+        ],
+      },
+      {
+        name: "Policy Runtime",
+        items: [
+          { label: "Guardrails", desc: "Rate limits, timeouts, policy checks before actuation." },
+          { label: "Routing", desc: "Trusted intent events into apps/devices via contracts." },
+        ],
+      },
+      {
+        name: "Application Layer",
+        items: [
+          { label: "BrainApps (BApps)", desc: "SDKs for input/state/feedback; catalog distribution." },
+          { label: "Dev tooling", desc: "Eval harness, logs, replay, model/version pinning." },
+        ],
+      },
+      {
+        name: "Infrastructure",
+        items: [
+          { label: "Edge-first", desc: "Local by default; encrypted transit & at-rest if cloud is used." },
+          { label: "Scalability", desc: "Batch & streaming pipelines; observability baked in." },
+        ],
+      },
+    ],
+  },
+
+  /** NEW — Used by <UseCases/> */
+  useCases: {
+    title: "Real-world applications",
+    items: [
+      {
+        title: "Healthcare",
+        desc: "Assistive communication and control for patients with motor or speech impairments.",
+      },
+      {
+        title: "Business & productivity",
+        desc: "Faster focus transitions, hands-free shortcuts, and intent-driven UI control.",
+      },
+      {
+        title: "Gaming & VR",
+        desc: "Immersive, affect-responsive experiences with low-latency intent input.",
+      },
+      {
+        title: "Education",
+        desc: "Adaptive learning loops and cognitive training with user-controlled privacy.",
+      },
+      {
+        title: "Security",
+        desc: "Privacy-preserving neurosignatures as a supplementary factor within MFA.",
+      },
+      {
+        title: "Smart living & IoT",
+        desc: "Thought-based control for home and environment under strict policy guardrails.",
+      },
+    ],
+  },
 
   hero: {
-    h1: "Neurolect — the OS layer for brain–computer interfaces",
-    sub: "From raw signals to safe, portable neurosignatures developers can build on.",
-    primaryCta: "Request investor call",
-    secondaryCta: "Download investor pack",
+    eyebrow: "Operating System for Cyber-Brains",
+    title: "Neurolect: the universal OS for brain–computer interfaces",
+    subtitle:
+      "Translate neural signals into linguo-emotional data. Standardize across devices with a hardware-agnostic HAL. Build BrainApps with a developer-first runtime and SDKs.",
+    primaryCta: { label: "Investors", href: "/investors", track: "cta_investors" },
+    secondaryCta: {
+      label: "Download teaser",
+      href: "/pack/neurolect-investor-pack.pdf",
+      track: "cta_teaser",
+    },
+    note:
+      "Neurosignatures are experimental and intended as a supplementary factor within multi-factor auth.",
   },
 
-  whatIs: {
-    title: "Neurolect — Operating System for Brain–Computer Interfaces",
-    body:
-      "Neurolect is a universal BCI OS for linguo-emotional data exchange. " +
-      "It enables brain-to-device and brain-to-brain communication via neurosignatures, " +
-      "with safety, privacy, and developer-friendly primitives.",
-  },
+  homeMiniCards: [
+    {
+      title: "How it works",
+      desc:
+        "Signals → Processing → Linguo-Emotional Models → Policy Runtime → SDKs. A clear, device-agnostic pipeline.",
+      href: "/how-it-works",
+    },
+    {
+      title: "Moat & IP",
+      desc:
+        "Neurosignature schema, policy engine, device drivers, and an evaluation harness compose a durable platform moat.",
+      href: "/moat",
+    },
+    {
+      title: "Safety & Ethics",
+      desc:
+        "Consent and revocation by default, strict rate limits, stimulation guardrails, and privacy-first data handling.",
+      href: "/safety",
+    },
+    {
+      title: "Why now",
+      desc:
+        "Convergence of neuro-hardware maturity, ML decoding progress, privacy norms, and falling compute costs.",
+      href: "/why-now",
+    },
+  ],
 
   howItWorks: {
     title: "How Neurolect works",
-    sub: "From raw biosignals to safe, portable neurosignatures developers can build on.",
-    layers: [
+    intro:
+      "Neurolect converts noisy neural signals into structured, linguo-emotional data and routes it through a policy-aware runtime into BrainApps—independent of the underlying BCI hardware.",
+    items: [
       {
-        title: "Signals (I/O layer)",
-        body: "EEG, EMG, eye-tracking, speech, IMU and other devices feed normalized streams.",
+        name: "Signals",
+        body:
+          "Support invasive and non-invasive sources (EEG/MEG/implants). A hardware abstraction layer normalizes streams.",
       },
       {
-        title: "Processing",
-        body: "Denoising, feature extraction and multi-modal alignment create stable representations.",
+        name: "Processing",
+        body:
+          "Adaptive filtering, artifact rejection, and synchronization; prepare signals for robust downstream decoding.",
       },
       {
-        title: "Intent Models",
-        body: "Decoders map signals to intents; personalization adapts with user-consented profiles.",
+        name: "Linguo-Emotional Models",
+        body:
+          "ML models map activity to linguistic intent and basic affect. Early but rapidly improving; scoped for pragmatic use.",
       },
       {
-        title: "Policy Runtime",
-        body: "Consent, scopes, rate limits and audit produce safe, revocable capabilities.",
+        name: "Policy Runtime",
+        body:
+          "A runtime that enforces consent, rate limits, guardrails, and per-app permissions before actions execute.",
       },
       {
-        title: "SDKs & Apps",
-        body: "TypeScript/Rust SDKs, simulators and reference apps expose capabilities to builders.",
+        name: "SDKs & BrainApps",
+        body:
+          "Developer APIs for input events, state, and feedback loops. Distribute BApps via a curated catalog.",
       },
     ],
+    footnote:
+      "Neurolect does not claim full natural language decoding. We start narrow, measurable, and expand by evidence.",
   },
 
   moat: {
     title: "Moat & IP",
-    sub: "A defensible stack: schema + runtime + drivers + evaluation + governance.",
     bullets: [
-      {
-        title: "Neurosignature schema",
-        body: "Portable, revocable user embeddings with provenance and consent scopes — the API others build on.",
-      },
-      {
-        title: "Policy runtime",
-        body: "Runtime enforcement for consented capabilities: scopes, rate limits, revocation, and audit trails.",
-      },
-      {
-        title: "Hardware drivers",
-        body: "Adapters for EEG/EMG/eye/speech/IMU — abstracted interfaces that compound integrations over time.",
-      },
-      {
-        title: "Evaluation harness",
-        body: "Standardized tasks, datasets, and safety tests for reproducible progress and regulatory readiness.",
-      },
-      {
-        title: "Governance & ecosystem",
-        body: "Open spec + compatibility program; long-term network effects for devices, apps, and users.",
-      },
+      "Neurosignature schema: a portable, privacy-preserving representation of user-specific neural features.",
+      "Policy engine: programmable guardrails for consent, revocation, and safe output pathways.",
+      "Device drivers: HAL and connectors for heterogeneous BCI hardware (non-invasive to invasive).",
+      "Eval harness: standardized tasks and datasets to compare model and driver performance over time.",
     ],
     callout:
-      "The core IP is the schema + runtime coupling: consent-aware neurosignatures that remain portable yet controllable.",
+      "IP focuses on the schema + runtime contracts that make third-party hardware and BApps interoperable.",
   },
 
   safety: {
     title: "Safety & Ethics",
-    sub: "We design for consent, revocability, and human agency — before performance.",
-    items: [
-      {
-        title: "Consent & control",
-        body: "All capabilities are granted per scope, per app. Users can revoke at any time; grants expire by default.",
-      },
-      {
-        title: "Privacy by design",
-        body: "Neurosignatures are user-owned artifacts with provenance; apps receive only the minimum signals needed.",
-      },
-      {
-        title: "Rate limits & guardrails",
-        body: "Limits per capability and per app prevent feedback loops and abuse; safety tests run in CI.",
-      },
-      {
-        title: "Stimulation safeguards",
-        body: "Protective defaults for any actuators; human-in-the-loop for sensitive actions and overrides.",
-      },
-      {
-        title: "Auditability",
-        body: "Every consented action is logged with source, scope, and time to enable post-hoc review.",
-      },
+    preface:
+      "Neural data is intimate. Neurolect builds for safety, consent, and dignity from the first line of code.",
+    bullets: [
+      "Consent & revocation: explicit, session-scoped permissions; one-tap revoke.",
+      "Rate limits & timeouts: reduce runaway actions and fatigue; bound actuation.",
+      "Stimulation guardrails: conservative defaults; hardware-vendor-verified profiles only.",
+      "Private by default: local first, encrypted transit and at-rest if cloud is used.",
+      "Neurosignatures as supplementary: never the sole factor for authentication.",
     ],
-    link: {
-      href: "/pack/neurolect-safety-ethics.pdf",
-      label: "Safety & Ethics 1-pager (PDF)",
-    },
+    linkLabel: "Read the plain-English policy",
+    linkHref: "/privacy",
   },
 
   whyNow: {
     title: "Why now",
-    sub: "Convergence unlocks a new OS layer for human–computer interaction.",
     bullets: [
-      {
-        title: "Hardware maturity",
-        body: "Affordable EEG/EMG/eye-tracking and improved sensors shift from labs to consumer devices.",
-      },
-      {
-        title: "AI personalization",
-        body: "On-device and profile-adaptive models map signals to intents with per-user calibration.",
-      },
-      {
-        title: "Privacy tailwinds",
-        body: "Regulatory pressure rewards designs where people own their data and can revoke access.",
-      },
-      {
-        title: "Falling costs / tooling",
-        body: "Open tooling and edge accelerators make multi-modal pipelines cheap to run and iterate.",
-      },
+      "Hardware slope: consumer EEG improving; invasive systems scaling channels and reliability.",
+      "ML decoding: state-of-the-art shows meaningful strides in constrained settings.",
+      "Privacy & sovereignty: appetite for user-owned identity and consentable data flows.",
+      "Cost curves: cheaper sensors and compute unlock practical, narrow BCI experiences.",
     ],
-    note: "We standardize the interface — neurosignatures + policy runtime — so devices and apps can interoperate day one.",
+    note:
+      "We avoid hype: ship constrained experiences that are useful today; expand surface area with evidence.",
   },
 
-  challenges: {
-    title: "Key challenges we’re solving",
-    items: [
-      {
-        title: "Signal → Intent gap",
-        body: "Decode noisy neural/physio signals into reliable intents.",
-      },
-      {
-        title: "Privacy & consent",
-        body: "User-owned neurosignatures, permissioning, revocation, auditability.",
-      },
-      {
-        title: "Safety & ethics",
-        body: "Guardrails for feedback loops; sandboxed capabilities and review layers.",
-      },
-      {
-        title: "Interoperability",
-        body: "Hardware-agnostic drivers and a common API/SDK for apps and devices.",
-      },
-    ],
-  },
-
-  core: {
-    title: "Neurolect core solutions",
-    bullets: [
-      "Neurosignature schema: portable, revocable user embeddings with provenance.",
-      "Intent runtime: from low-level signals to typed actions and policies.",
-      "Safety model: consented scopes, rate limits, and reversible permissions.",
-      "Dev SDKs: TypeScript/Rust kits, simulators, reference apps.",
-    ],
-  },
-
-  tech: {
-    title: "Technology stack",
-    layers: [
-      "I/O layer: EEG/EMG/eye-tracking/speech/IMU; hardware drivers.",
-      "Signal processing: denoise, feature extraction, alignment.",
-      "Model layer: intent decoding, personalization, continual learning.",
-      "Runtime: policy engine, capability tokens, sandbox.",
-      "SDKs & APIs: app surface, event bus, storage adapters.",
-    ],
-  },
-
-  useCases: {
-    title: "Use cases",
-    items: [
-      "Hands-free accessibility and assistive control",
-      "Silent text input and command palettes",
-      "Affective computing & adaptive UX",
-      "BCI-first creative tools",
-      "Telepresence & collaborative control",
-      "Neuro-secure authentication (consented)",
-    ],
-  },
-
-  roadmap: {
-    title: "Roadmap",
-    phases: [
-      {
-        id: "v01-research-kits",
-        phase: "v0.1 Research kits",
-        detail:
-          "Signal simulators, mock devices, baseline decoders, demo apps.",
-        status: "achieved",
-        date: "2025-08",
-      },
-      {
-        id: "v02-dev-preview",
-        phase: "v0.2 Dev Preview",
-        detail: "SDKs, policy engine MVP, consent flows, local profiles.",
-        status: "achieved",
-        date: "2025-09",
-      },
-      {
-        id: "v03-hardware-integrations",
-        phase: "v0.3 Hardware integrations",
-        detail: "Drivers for 2–3 devices, on-device inference options.",
-        status: "planned",
-        date: "2025-Q4",
-      },
-      {
-        id: "v04-safety-review",
-        phase: "v0.4 Safety review",
-        detail: "Ethics board process, testing harnesses, red-team protocols.",
-        status: "planned",
-        date: "2026-Q1",
-      },
-      {
-        id: "v10-launch",
-        phase: "v1.0 Launch",
-        detail: "Stable APIs, store for apps/drivers, governance bootstrap.",
-        status: "planned",
-        date: "2026",
-      },
-    ],
-  },
-
+  /** Used by <Traction/>; placeholders until logos/quotes are finalized */
   traction: {
-    title: "Traction & Social Proof",
-    sub: "Early interest and partnerships. Logos and quotes are illustrative until permissions finalize.",
     logos: [
-      { src: "/logos/placeholder-1.svg", alt: "Partner One" },
-      { src: "/logos/placeholder-2.svg", alt: "Partner Two" },
-      { src: "/logos/placeholder-3.svg", alt: "Partner Three" },
-      { src: "/logos/placeholder-4.svg", alt: "Partner Four" },
+      { name: "Alpha Labs" },
+      { name: "Signal Bridge" },
+      { name: "Cerebra Partners" },
+      { name: "Neuron Forge" },
+      { name: "Atlas Ventures" },
+      { name: "Synapse Studio" },
     ],
     quotes: [
       {
-        text: "We’re excited about a portable neurosignature standard we can build apps on.",
-        attribution: "Early Design Partner",
-        role: "Head of Product",
+        quote:
+          "Neurolect’s policy-first runtime is the most credible path to safe, cross-device neural interfaces.",
+        author: "Principal, Atlas Ventures",
       },
       {
-        text: "Policy-first runtime is the missing layer for safe BCI capabilities.",
-        attribution: "Research Collaborator",
-        role: "PI, Neural Interfaces Lab",
+        quote:
+          "A lingua franca for neural intent is the missing layer. HAL + SDKs make this buildable today.",
+        author: "Founder, Neuro HMI startup",
       },
     ],
   },
 
-  investors: {
-    title: "For Investors",
-    body:
-      "We’re raising to bring the Neurolect OS to developers and device makers. " +
-      "Book a call, grab the pack, or request the full data room.",
-    calendlyUrl:
-      "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2jtVwCNFO-gN8hhIBFH_D77MF1oouFKFWdFWXv7hMRuZUXltBB-BVk54T6uN6_zJi16slzapI-",
-  },
-
-  team: {
-    title: "Team & Advisors",
-    sub: "Cross-disciplinary team across neuroscience, HCI, security, and infra.",
-  },
-
+  /** Used by <Testimonials/> */
   testimonials: {
     title: "Recognition",
-    sub: "Quotes & logos coming soon — partners, researchers, ecosystem supporters.",
+    sub: "Signals from the field",
+    items: [
+      {
+        quote:
+          "Policy-gated intent routing is exactly how neural UX becomes safe and useful beyond demos.",
+        author: "CTO, Neural Interfaces Startup",
+      },
+      {
+        quote:
+          "A standardized intent schema with HAL-level interop is the missing substrate for BCI apps.",
+        author: "Research Lead, Human–AI Interaction Lab",
+      },
+    ],
+    quotes: [
+      {
+        quote:
+          "Neurolect’s approach is refreshingly pragmatic—narrow, measurable, and privacy-first.",
+        author: "Partner, Deep Tech Fund",
+      },
+    ],
   },
 
+  /** Used by <FinalCTA/> */
   finalCta: {
-    title: "Build with Neurolect",
-    sub: "Join the dev preview, propose integrations, or collaborate on research.",
+    title: "Ready to talk?",
+    sub: "Book a call and grab the teaser pack.",
+    primary: { label: "Investors", href: "/investors", track: "cta_investors_footer" },
+    secondary: {
+      label: "Download teaser",
+      href: "/pack/neurolect-investor-pack.pdf",
+      track: "cta_teaser_footer",
+    },
   },
 };
-
-export type SiteCopy = typeof COPY;
-export { COPY };
-export default COPY;
-

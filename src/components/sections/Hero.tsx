@@ -1,58 +1,73 @@
 // src/components/sections/Hero.tsx
+"use client";
+
 import Link from "next/link";
+import { COPY } from "@/lib/copy";
+
+// Safe Plausible call if present (no global augmentation)
+type PlausibleFn = (event: string, options?: { props?: Record<string, unknown> }) => void;
+type PlausibleWin = { plausible?: PlausibleFn };
 
 export default function Hero() {
+  const track = (name: string) => {
+    const w = typeof window !== "undefined" ? (window as unknown as PlausibleWin) : null;
+    if (w?.plausible) w.plausible(name);
+  };
+
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-16 grid items-center gap-10 md:grid-cols-2">
+      <div className="mx-auto grid items-center gap-10 md:grid-cols-2 max-w-7xl px-4 sm:px-6 lg:px-8 py-10 md:py-14">
         {/* Left copy */}
-        <div>
-          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">
-            <span className="gradient-text">Neurolect</span> — The Universal OS for Brain–Computer Interfaces
+        <div className="max-w-3xl">
+          <p className="text-sm/6 tracking-widest text-primary/80 uppercase">
+            {COPY.hero.eyebrow}
+          </p>
+          <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">
+            {COPY.hero.title}
           </h1>
-          <p className="mt-5 text-lg text-muted-foreground max-w-prose">
-            Connect, communicate, and control technology directly from your mind.
-            A calm, safe pathway from neural activity to intent—built for people and products.
+          <p className="mt-4 text-base/7 text-muted-foreground">
+            {COPY.hero.subtitle}
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap gap-3">
             <Link
-              href="/investors"
-              className="inline-flex items-center rounded-2xl px-4 py-2 text-sm font-semibold shadow-sm border bg-primary text-primary-foreground hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              href={COPY.hero.primaryCta.href}
+              onClick={() => track(COPY.hero.primaryCta.track)}
+              className="inline-flex items-center rounded-2xl border bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:opacity-90"
             >
-              Investors
+              {COPY.hero.primaryCta.label}
             </Link>
             <Link
-              href="/pack/neurolect-investor-pack.pdf"
-              className="inline-flex items-center rounded-2xl px-4 py-2 text-sm font-semibold border hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              href={COPY.hero.secondaryCta.href}
+              onClick={() => track(COPY.hero.secondaryCta.track)}
+              className="inline-flex items-center rounded-2xl border px-3.5 py-2 text-sm font-semibold hover:bg-accent hover:text-accent-foreground"
             >
-              Download teaser
+              {COPY.hero.secondaryCta.label}
             </Link>
           </div>
 
-          <div className="mt-6">
-            <span className="chip">Private by design</span>
-            <span className="chip ml-2">Consent &amp; revocation</span>
-          </div>
+          <p className="mt-3 text-xs text-muted-foreground">
+            {COPY.hero.note}
+          </p>
         </div>
 
-        {/* Right: looped video — no white surface, no padding; clipped to rounded corners */}
-        <div className="relative aspect-[4/5] w-full">
-          <div className="absolute inset-0 overflow-hidden rounded-[1.25rem]">
+        {/* Right: portrait video card (4:5), no surface/padding, rounded mask */}
+        <div className="relative w-full">
+          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[1.25rem]">
             <video
-              className="block h-full w-full object-cover"
+              className="h-full w-full object-cover"
               autoPlay
-              muted
               playsInline
               loop
+              muted
               preload="auto"
               aria-label="Neon light trails encircling a calm face—symbolizing neural intent"
             >
               <source src="/media/hero-loop-desktop.webm" type="video/webm" />
               <source src="/media/hero-loop-desktop.mp4" type="video/mp4" />
             </video>
-            {/* Optional very light veil for legibility (remove if you prefer pure) */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/20 via-white/5 to-transparent" />
+            {/* ultra-light veil to harmonize with the light background; remove if unwanted */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/18 via-white/5 to-transparent" />
           </div>
         </div>
       </div>
