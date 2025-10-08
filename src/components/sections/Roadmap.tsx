@@ -2,15 +2,15 @@
 import React from "react";
 import { COPY } from "@/lib/copy";
 
-// Old shape (some earlier components used this)
+// Old shape (legacy)
 type PhaseOld = {
   phase: string;
   detail: string;
-  status: string; // "achieved" | "planned" | "in-progress"
+  status: string; // "achieved" | "planned" | "in-progress" | "done"
   date: string;
 };
 
-// New shape (in current copy.ts)
+// New shape (current copy.ts)
 type PhaseNew = {
   id: string;
   when: string;
@@ -68,8 +68,7 @@ function toUI(val: unknown, index: number): PhaseUI {
     };
   }
   if (isPhaseOld(val)) {
-    // Map the old flat shape to the new UI model
-    const status =
+    const normalized =
       val.status === "done" || val.status === "planned" || val.status === "in-progress"
         ? val.status
         : ("planned" as const);
@@ -77,11 +76,11 @@ function toUI(val: unknown, index: number): PhaseUI {
       id: `phase-${index + 1}`,
       when: val.date,
       title: val.phase,
-      achieved: status === "done" || val.status === "achieved",
-      items: [{ label: val.detail, status }],
+      achieved: normalized === "done" || val.status === "achieved",
+      items: [{ label: val.detail, status: normalized }],
     };
   }
-  // Fallback — should not happen if copy is well-formed
+  // Fallback
   return {
     id: `phase-${index + 1}`,
     when: "TBD",
