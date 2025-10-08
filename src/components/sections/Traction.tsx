@@ -1,34 +1,54 @@
-﻿"use client";
-
-import Image from "next/image";
-import SectionShell from "@/components/SectionShell";
+// src/components/sections/Traction.tsx
 import { COPY } from "@/lib/copy";
 
+type LogoItem =
+  | { name: string; src?: never }
+  | { name?: string; src: string; alt?: string };
+
 export default function Traction() {
-  const logos = COPY.traction.logos;
-  const quotes = COPY.traction.quotes;
+  const traction = COPY?.traction ?? { logos: [], quotes: [] };
+  const logos: LogoItem[] = Array.isArray(traction.logos) ? traction.logos : [];
+  const quotes: { quote: string; author?: string }[] = Array.isArray(traction.quotes) ? traction.quotes : [];
 
   return (
-    <SectionShell id="traction" title={COPY.traction.title} subtitle={COPY.traction.sub}>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
-        {logos.map((l, i) => (
-          <div key={i} className="flex items-center justify-center rounded-2xl border p-4 bg-background/50">
-            <Image src={l.src} alt={l.alt} width={160} height={48} className="opacity-80 hover:opacity-100 transition-opacity" />
-          </div>
-        ))}
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Logos */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 items-center">
+        {logos.length > 0 ? (
+          logos.map((l, i) => (
+            <div
+              key={(l as any).src ?? (l as any).name ?? i}
+              className="rounded-xl border bg-background/50 backdrop-blur p-3 text-center text-xs text-muted-foreground"
+              title={(l as any).name ?? (l as any).alt ?? "Partner"}
+            >
+              {/* If an image path is provided later, you can render it here with next/image.
+                  For now we render name chips to avoid 404s and lint issues. */}
+              {(l as any).name ? <span className="font-medium">{(l as any).name}</span> : <span>Partner</span>}
+            </div>
+          ))
+        ) : (
+          <>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="rounded-xl border bg-background/40 backdrop-blur p-3 text-center text-xs text-muted-foreground">
+                Partner
+              </div>
+            ))}
+          </>
+        )}
       </div>
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
-        {quotes.map((q, i) => (
-          <figure key={i} className="rounded-2xl border p-6 bg-background/50">
-            <blockquote className="text-sm text-muted-foreground">“{q.text}”</blockquote>
-            <figcaption className="mt-3 text-xs">
-              <span className="font-semibold">{q.attribution}</span>
-              {q.role ? <span className="text-muted-foreground"> — {q.role}</span> : null}
-            </figcaption>
+
+      {/* Quotes */}
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        {(quotes.length > 0 ? quotes : [
+          { quote: "“Neurolect makes neural UX practical by scoping, standardizing, and securing.”", author: "Investor" },
+          { quote: "“Policy-first design is the only way to scale BCIs beyond demos.”", author: "Founder" },
+        ]).map((q, i) => (
+          <figure key={i} className="rounded-2xl border bg-background/60 backdrop-blur-xl p-5">
+            <blockquote className="text-sm text-muted-foreground">{q.quote}</blockquote>
+            {q.author && <figcaption className="mt-2 text-xs text-foreground/70">— {q.author}</figcaption>}
           </figure>
         ))}
       </div>
-    </SectionShell>
+    </section>
   );
 }
-
