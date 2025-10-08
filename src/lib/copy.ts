@@ -63,6 +63,50 @@ export const COPY = {
     ],
   },
 
+  /** NEW — Used by <Roadmap/> */
+  roadmap: {
+    title: "Roadmap milestones",
+    phases: [
+      {
+        id: "phase-1",
+        when: "2025 H2",
+        title: "Phase 1 — Foundations",
+        achieved: true,
+        items: [
+          { label: "Signals & HAL for non-invasive EEG", status: "done" },
+          { label: "Linguo-Emotional Models v0 (narrow tasks)", status: "done" },
+          { label: "Policy Runtime (consent, revocation, rate limits)", status: "done" },
+          { label: "SDKs for BrainApps (input/state/feedback)", status: "done" },
+        ],
+      },
+      {
+        id: "phase-2",
+        when: "2026 H1",
+        title: "Phase 2 — Scale & Interop",
+        achieved: false,
+        items: [
+          { label: "Device drivers for additional EEG vendors", status: "planned" },
+          { label: "Eval harness: standardized tasks & datasets", status: "planned" },
+          { label: "Neurosignature schema (supplementary auth only)", status: "planned" },
+          { label: "BApps catalog (curated distribution)", status: "planned" },
+        ],
+      },
+      {
+        id: "phase-3",
+        when: "2026–2027",
+        title: "Phase 3 — Advanced IO",
+        achieved: false,
+        items: [
+          { label: "Higher-bandwidth decoding with partner devices", status: "planned" },
+          { label: "Closed-loop UX research under strict guardrails", status: "planned" },
+          { label: "Exploratory brain-to-brain protocols (no stimulation by default)", status: "planned" },
+        ],
+      },
+    ],
+    footnote:
+      "Dates are indicative. We ship constrained, useful experiences first; expand by evidence and safety reviews.",
+  },
+
   hero: {
     eyebrow: "Operating System for Cyber-Brains",
     title: "Neurolect: the universal OS for brain–computer interfaces",
@@ -203,7 +247,7 @@ export const COPY = {
     ],
   },
 
-  /** NEW — Used by <FinalCTA/> */
+  /** Used by <FinalCTA/> */
   finalCta: {
     title: "Ready to talk?",
     sub: "Book a call and grab the teaser pack.",
