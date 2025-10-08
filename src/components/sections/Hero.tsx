@@ -4,18 +4,20 @@
 import Link from "next/link";
 import { COPY } from "@/lib/copy";
 
+// Safe Plausible call if present (no global augmentation)
+type PlausibleFn = (event: string, options?: { props?: Record<string, unknown> }) => void;
+type PlausibleWin = { plausible?: PlausibleFn };
+
 export default function Hero() {
-  // Safe Plausible call if present
-  type PlausibleFn = (event: string, options?: { props?: Record<string, unknown> }) => void;
   const track = (name: string) => {
-    const w = typeof window !== "undefined" ? (window as unknown as { plausible?: PlausibleFn }) : null;
+    const w = typeof window !== "undefined" ? (window as unknown as PlausibleWin) : null;
     if (w?.plausible) w.plausible(name);
   };
 
   return (
-    <section className="relative">
-      {/* Copy block */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-12 md:pt-16 md:pb-14">
+    <section className="relative overflow-hidden">
+      <div className="mx-auto grid items-center gap-10 md:grid-cols-2 max-w-7xl px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+        {/* Left copy */}
         <div className="max-w-3xl">
           <p className="text-sm/6 tracking-widest text-primary/80 uppercase">
             {COPY.hero.eyebrow}
@@ -49,19 +51,23 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* Video card */}
-        <div className="mt-10 md:mt-14">
-          <div className="relative overflow-hidden rounded-3xl border bg-black/70 shadow-lg">
+        {/* Right: portrait video card (4:5), no surface/padding, rounded mask */}
+        <div className="relative w-full">
+          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[1.25rem]">
             <video
-              className="h-[320px] w-full md:h-[440px] object-cover"
+              className="h-full w-full object-cover"
               autoPlay
               playsInline
               loop
               muted
+              preload="auto"
+              aria-label="Neon light trails encircling a calm face—symbolizing neural intent"
             >
               <source src="/media/hero-loop-desktop.webm" type="video/webm" />
               <source src="/media/hero-loop-desktop.mp4" type="video/mp4" />
             </video>
+            {/* ultra-light veil to harmonize with the light background; remove if unwanted */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/18 via-white/5 to-transparent" />
           </div>
         </div>
       </div>
