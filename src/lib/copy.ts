@@ -9,11 +9,46 @@ export const SITE = {
 };
 
 export const COPY = {
-  /** NEW — used by <WhatIs/> */
+  /** Used by <WhatIs/> */
   whatIs: {
     title: "What is Neurolect?",
     body:
       "Neurolect is a hardware-agnostic operating system for brain–computer interfaces. It translates neural activity into structured, linguo-emotional data and routes trusted intent through a policy-aware runtime into apps and devices via a hardware abstraction layer (HAL). Developers build BrainApps with stable tokens and SDKs, while users remain in control through consent, revocation, and privacy-first defaults. Neurosignatures are optional and used only as a supplementary factor within multi-factor authentication.",
+  },
+
+  /** NEW — Used by <ChallengesSolutions/> */
+  challenges: {
+    title: "Challenges Neurolect Addresses",
+    items: [
+      {
+        title: "Communication barriers",
+        problem:
+          "Neural interfaces today struggle to convey nuanced intent and affect, leading to brittle commands and shallow expressiveness.",
+        solution:
+          "Neurolect maps neural activity to linguo-emotional tokens (intent + basic affect). Apps receive richer signals, improving clarity and usability.",
+      },
+      {
+        title: "Limited accessibility",
+        problem:
+          "Most systems assume specific motor or speech capabilities and require device-specific training.",
+        solution:
+          "A hardware-agnostic HAL plus stable tokens make BrainApps accessible across non-invasive and invasive devices with lighter onboarding.",
+      },
+      {
+        title: "Security & privacy",
+        problem:
+          "Raw neural data is intimate; many stacks lack consent primitives, revocation, or clear safety policy.",
+        solution:
+          "Consent & revocation by default, policy-gated actions, private-by-default processing, and neurosignatures used only as a supplementary factor.",
+      },
+      {
+        title: "Fragmented standards",
+        problem:
+          "BCI hardware and SDKs are incompatible, forcing one-off integrations and fragile demos.",
+        solution:
+          "Drivers + HAL unify device I/O; the eval harness and stable intent tokens let developers integrate once and run everywhere.",
+      },
+    ],
   },
 
   hero: {
@@ -132,7 +167,7 @@ export const COPY = {
       "We avoid hype: ship constrained experiences that are useful today; expand surface area with evidence.",
   },
 
-  /** used by <Traction/>; safe placeholders until logos/quotes are finalized */
+  /** Used by <Traction/>; safe placeholders until logos/quotes are finalized */
   traction: {
     logos: [
       { name: "Alpha Labs" },
