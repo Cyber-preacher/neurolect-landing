@@ -16,7 +16,7 @@ export const COPY = {
       "Neurolect is a hardware-agnostic operating system for brain–computer interfaces. It translates neural activity into structured, linguo-emotional data and routes trusted intent through a policy-aware runtime into apps and devices via a hardware abstraction layer (HAL). Developers build BrainApps with stable tokens and SDKs, while users remain in control through consent, revocation, and privacy-first defaults. Neurosignatures are optional and used only as a supplementary factor within multi-factor authentication.",
   },
 
-  /** NEW — Used by <ChallengesSolutions/> */
+  /** Used by <ChallengesSolutions/> */
   challenges: {
     title: "Challenges Neurolect Addresses",
     items: [
@@ -48,6 +48,18 @@ export const COPY = {
         solution:
           "Drivers + HAL unify device I/O; the eval harness and stable intent tokens let developers integrate once and run everywhere.",
       },
+    ],
+  },
+
+  /** NEW — Used by <CoreSolutions/> */
+  core: {
+    title: "Core Solutions & Unique Advantages",
+    bullets: [
+      "Thought-based control — interact with apps and devices directly via decoded intent tokens.",
+      "Emotionally rich interactions — include basic affect to disambiguate and personalize actions.",
+      "Neurosignature security — a portable, privacy-preserving, supplementary factor for identity.",
+      "Universal compatibility — HAL + drivers make BrainApps hardware-agnostic (non-invasive to invasive).",
+      "BrainApps (BApps) — developer SDKs and stable schemas enable a new category of neural applications.",
     ],
   },
 
