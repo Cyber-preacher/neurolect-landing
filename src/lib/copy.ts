@@ -163,6 +163,37 @@ export const COPY = {
     ],
   },
 
+  /** NEW — Used by <UseCases/> */
+  useCases: {
+    title: "Real-world applications",
+    items: [
+      {
+        title: "Healthcare",
+        desc: "Assistive communication and control for patients with motor or speech impairments.",
+      },
+      {
+        title: "Business & productivity",
+        desc: "Faster focus transitions, hands-free shortcuts, and intent-driven UI control.",
+      },
+      {
+        title: "Gaming & VR",
+        desc: "Immersive, affect-responsive experiences with low-latency intent input.",
+      },
+      {
+        title: "Education",
+        desc: "Adaptive learning loops and cognitive training with user-controlled privacy.",
+      },
+      {
+        title: "Security",
+        desc: "Privacy-preserving neurosignatures as a supplementary factor within MFA.",
+      },
+      {
+        title: "Smart living & IoT",
+        desc: "Thought-based control for home and environment under strict policy guardrails.",
+      },
+    ],
+  },
+
   hero: {
     eyebrow: "Operating System for Cyber-Brains",
     title: "Neurolect: the universal OS for brain–computer interfaces",
@@ -303,11 +334,10 @@ export const COPY = {
     ],
   },
 
-  /** NEW — Used by <Testimonials/> */
+  /** Used by <Testimonials/> */
   testimonials: {
     title: "Recognition",
     sub: "Signals from the field",
-    // Use either `items` or `quotes` — component can read .items; we provide both for compatibility.
     items: [
       {
         quote:
