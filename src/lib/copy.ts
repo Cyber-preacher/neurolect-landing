@@ -51,7 +51,7 @@ export const COPY = {
     ],
   },
 
-  /** NEW — Used by <CoreSolutions/> */
+  /** Used by <CoreSolutions/> */
   core: {
     title: "Core Solutions & Unique Advantages",
     bullets: [
@@ -201,5 +201,17 @@ export const COPY = {
         author: "Founder, Neuro HMI startup",
       },
     ],
+  },
+
+  /** NEW — Used by <FinalCTA/> */
+  finalCta: {
+    title: "Ready to talk?",
+    sub: "Book a call and grab the teaser pack.",
+    primary: { label: "Investors", href: "/investors", track: "cta_investors_footer" },
+    secondary: {
+      label: "Download teaser",
+      href: "/pack/neurolect-investor-pack.pdf",
+      track: "cta_teaser_footer",
+    },
   },
 };
