@@ -9,6 +9,13 @@ export const SITE = {
 };
 
 export const COPY = {
+  /** NEW — used by <WhatIs/> */
+  whatIs: {
+    title: "What is Neurolect?",
+    body:
+      "Neurolect is a hardware-agnostic operating system for brain–computer interfaces. It translates neural activity into structured, linguo-emotional data and routes trusted intent through a policy-aware runtime into apps and devices via a hardware abstraction layer (HAL). Developers build BrainApps with stable tokens and SDKs, while users remain in control through consent, revocation, and privacy-first defaults. Neurosignatures are optional and used only as a supplementary factor within multi-factor authentication.",
+  },
+
   hero: {
     eyebrow: "Operating System for Cyber-Brains",
     title: "Neurolect: the universal OS for brain–computer interfaces",
@@ -125,10 +132,9 @@ export const COPY = {
       "We avoid hype: ship constrained experiences that are useful today; expand surface area with evidence.",
   },
 
-  /** NEW — used by <Traction/>; safe placeholders until logos/quotes are finalized */
+  /** used by <Traction/>; safe placeholders until logos/quotes are finalized */
   traction: {
     logos: [
-      // Use text-name chips by default; switch to image paths later (e.g., "/logos/foo.svg")
       { name: "Alpha Labs" },
       { name: "Signal Bridge" },
       { name: "Cerebra Partners" },
