@@ -107,7 +107,7 @@ export const COPY = {
       "Dates are indicative. We ship constrained, useful experiences first; expand by evidence and safety reviews.",
   },
 
-  /** NEW — Used by <TechStack/> */
+  /** Used by <TechStack/> */
   tech: {
     title: "Neurolect technology stack",
     layers: [
@@ -279,7 +279,7 @@ export const COPY = {
       "We avoid hype: ship constrained experiences that are useful today; expand surface area with evidence.",
   },
 
-  /** Used by <Traction/>; safe placeholders until logos/quotes are finalized */
+  /** Used by <Traction/>; placeholders until logos/quotes are finalized */
   traction: {
     logos: [
       { name: "Alpha Labs" },
@@ -299,6 +299,32 @@ export const COPY = {
         quote:
           "A lingua franca for neural intent is the missing layer. HAL + SDKs make this buildable today.",
         author: "Founder, Neuro HMI startup",
+      },
+    ],
+  },
+
+  /** NEW — Used by <Testimonials/> */
+  testimonials: {
+    title: "Recognition",
+    sub: "Signals from the field",
+    // Use either `items` or `quotes` — component can read .items; we provide both for compatibility.
+    items: [
+      {
+        quote:
+          "Policy-gated intent routing is exactly how neural UX becomes safe and useful beyond demos.",
+        author: "CTO, Neural Interfaces Startup",
+      },
+      {
+        quote:
+          "A standardized intent schema with HAL-level interop is the missing substrate for BCI apps.",
+        author: "Research Lead, Human–AI Interaction Lab",
+      },
+    ],
+    quotes: [
+      {
+        quote:
+          "Neurolect’s approach is refreshingly pragmatic—narrow, measurable, and privacy-first.",
+        author: "Partner, Deep Tech Fund",
       },
     ],
   },
