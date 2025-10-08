@@ -63,7 +63,7 @@ export const COPY = {
     ],
   },
 
-  /** NEW — Used by <Roadmap/> */
+  /** Used by <Roadmap/> */
   roadmap: {
     title: "Roadmap milestones",
     phases: [
@@ -105,6 +105,62 @@ export const COPY = {
     ],
     footnote:
       "Dates are indicative. We ship constrained, useful experiences first; expand by evidence and safety reviews.",
+  },
+
+  /** NEW — Used by <TechStack/> */
+  tech: {
+    title: "Neurolect technology stack",
+    layers: [
+      {
+        name: "User Interaction",
+        items: [
+          { label: "BCI inputs", desc: "EEG/MEG/implants; multi-vendor device support via HAL." },
+          { label: "Feedback loops", desc: "Haptics/visual/audio; strictly no stimulation by default." },
+        ],
+      },
+      {
+        name: "Processing",
+        items: [
+          { label: "Signal prep", desc: "Filtering, artifact rejection, synchronization." },
+          { label: "Feature extraction", desc: "Time–frequency features and learned embeddings." },
+        ],
+      },
+      {
+        name: "AI & Translation",
+        items: [
+          { label: "Linguo-Emotional Models", desc: "Map activity to intent tokens + basic affect." },
+          { label: "Calibration", desc: "Short, guided tasks to personalize within safe bounds." },
+        ],
+      },
+      {
+        name: "Security & Identity",
+        items: [
+          { label: "Consent & revocation", desc: "Session-scoped permissions; one-tap revoke." },
+          { label: "Neurosignatures (optional)", desc: "Supplementary factor in MFA; privacy-preserving schema." },
+        ],
+      },
+      {
+        name: "Policy Runtime",
+        items: [
+          { label: "Guardrails", desc: "Rate limits, timeouts, policy checks before actuation." },
+          { label: "Routing", desc: "Trusted intent events into apps/devices via contracts." },
+        ],
+      },
+      {
+        name: "Application Layer",
+        items: [
+          { label: "BrainApps (BApps)", desc: "SDKs for input/state/feedback; catalog distribution." },
+          { label: "Dev tooling", desc: "Eval harness, logs, replay, model/version pinning." },
+        ],
+      },
+      {
+        name: "Infrastructure",
+        items: [
+          { label: "Edge-first", desc: "Local by default; encrypted transit & at-rest if cloud is used." },
+          { label: "Scalability", desc: "Batch & streaming pipelines; observability baked in." },
+        ],
+      },
+    ],
   },
 
   hero: {
