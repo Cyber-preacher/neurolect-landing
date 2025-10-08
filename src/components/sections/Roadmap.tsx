@@ -1,119 +1,150 @@
-﻿// src/components/sections/Roadmap.tsx
-"use client";
-
-import * as React from "react";
-import Section from "@/components/sections/Section";
+// src/components/sections/Roadmap.tsx
+import React from "react";
 import { COPY } from "@/lib/copy";
 
-/**
- * Accepts dates in multiple formats and converts them to ISO for <time dateTime>.
- * Supported:
- *  - "YYYY-MM-DD"
- *  - "YYYY-MM"
- *  - "YYYY"
- *  - "Q1 YYYY" | "Q2 YYYY" | "Q3 YYYY" | "Q4 YYYY"
- */
-function toIsoDate(when: string): string | undefined {
-  const s = when.trim();
-
-  // YYYY-MM-DD
-  const ymd = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
-  if (ymd) {
-    const [, y, m, d] = ymd;
-    const date = new Date(Date.UTC(Number(y), Number(m) - 1, Number(d)));
-    return isNaN(date.getTime()) ? undefined : date.toISOString();
-  }
-
-  // YYYY-MM
-  const ym = /^(\d{4})-(\d{2})$/.exec(s);
-  if (ym) {
-    const [, y, m] = ym;
-    const date = new Date(Date.UTC(Number(y), Number(m) - 1, 1));
-    return isNaN(date.getTime()) ? undefined : date.toISOString();
-  }
-
-  // YYYY
-  const yOnly = /^(\d{4})$/.exec(s);
-  if (yOnly) {
-    const [, y] = yOnly;
-    const date = new Date(Date.UTC(Number(y), 0, 1));
-    return isNaN(date.getTime()) ? undefined : date.toISOString();
-  }
-
-  // Qx YYYY
-  const qy = /^Q([1-4])\s+(\d{4})$/.exec(s);
-  if (qy) {
-    const quarter = Number(qy[1]) as 1 | 2 | 3 | 4;
-    const year = Number(qy[2]);
-    const quarterStartMonthMap: Record<1 | 2 | 3 | 4, number> = {
-      1: 1,  // Jan
-      2: 4,  // Apr
-      3: 7,  // Jul
-      4: 10, // Oct
-    };
-    const month = quarterStartMonthMap[quarter];
-    const date = new Date(Date.UTC(year, month - 1, 1));
-    return isNaN(date.getTime()) ? undefined : date.toISOString();
-  }
-
-  return undefined;
-}
-
-type Phase = {
-  id: string;
-  phase: string;   // short title
-  detail: string;  // description
-  status: "done" | "planned" | string;
-  date: string;    // accepts formats parsed by toIsoDate
+// Old shape (some earlier components used this)
+type PhaseOld = {
+  phase: string;
+  detail: string;
+  status: string; // "achieved" | "planned" | "in-progress"
+  date: string;
 };
 
-// Named function so we can export both default and named
-function Roadmap() {
-  const c = COPY.roadmap as
-    | { title: string; phases: Phase[] }
-    | undefined;
+// New shape (in current copy.ts)
+type PhaseNew = {
+  id: string;
+  when: string;
+  title: string;
+  achieved: boolean;
+  items: { label: string; status: string }[]; // "done" | "planned" | "in-progress"
+};
 
-  // Prefer COPY.roadmap.phases; fall back to demo phases
-  const phases: Phase[] =
-    c?.phases ?? [
-      { id: "proto", phase: "Prototype v1", detail: "End-to-end demo", status: "planned", date: "Q4 2025" },
-      { id: "sdk", phase: "SDK Alpha", detail: "Bindings + docs", status: "planned", date: "2026-03" },
-      { id: "drivers", phase: "Driver Pack", detail: "Vendors A/B", status: "planned", date: "2026" },
-    ];
+// Unified UI model used for rendering
+type PhaseUI = {
+  id: string;
+  when: string;
+  title: string;
+  achieved: boolean;
+  items: { label: string; status: "done" | "planned" | "in-progress" }[];
+};
 
+// Type guards without using `any`
+function isRecord(v: unknown): v is Record<string, unknown> {
+  return typeof v === "object" && v !== null;
+}
+function isPhaseOld(v: unknown): v is PhaseOld {
   return (
-    <Section id="roadmap" title={c?.title ?? "Roadmap"}>
-      <ol className="relative border-s pl-6 space-y-6">
-        {phases.map((it) => {
-          const iso = toIsoDate(it.date);
-          const status = it.status === "done" ? "done" : "planned";
-          return (
-            <li key={it.id} className="ms-4">
-              <div className="absolute -start-1.5 mt-1.5 h-3 w-3 rounded-full border bg-background" />
-              <div className="flex items-center gap-2">
-                <h3 className="font-medium">{it.phase}</h3>
-                {status === "done" ? (
-                  <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700">
-                    achieved
-                  </span>
-                ) : (
-                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">
-                    planned
-                  </span>
-                )}
-              </div>
-              <p className="mt-1 text-sm text-muted-foreground">{it.detail}</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                <time dateTime={iso ?? ""}>{it.date}</time>
-              </p>
-            </li>
-          );
-        })}
-      </ol>
-    </Section>
+    isRecord(v) &&
+    typeof v.phase === "string" &&
+    typeof v.detail === "string" &&
+    typeof v.status === "string" &&
+    typeof v.date === "string"
+  );
+}
+function isPhaseNew(v: unknown): v is PhaseNew {
+  return (
+    isRecord(v) &&
+    typeof v.title === "string" &&
+    typeof v.when === "string" &&
+    typeof v.achieved === "boolean" &&
+    Array.isArray(v.items)
   );
 }
 
-export default Roadmap;
-export { Roadmap };
+function toUI(val: unknown, index: number): PhaseUI {
+  if (isPhaseNew(val)) {
+    return {
+      id: typeof val.id === "string" && val.id.length > 0 ? val.id : `phase-${index + 1}`,
+      when: val.when,
+      title: val.title,
+      achieved: val.achieved,
+      items: val.items.map((it, j) => ({
+        label: typeof it.label === "string" ? it.label : `Item ${j + 1}`,
+        status:
+          it.status === "done" || it.status === "planned" || it.status === "in-progress"
+            ? it.status
+            : ("planned" as const),
+      })),
+    };
+  }
+  if (isPhaseOld(val)) {
+    // Map the old flat shape to the new UI model
+    const status =
+      val.status === "done" || val.status === "planned" || val.status === "in-progress"
+        ? val.status
+        : ("planned" as const);
+    return {
+      id: `phase-${index + 1}`,
+      when: val.date,
+      title: val.phase,
+      achieved: status === "done" || val.status === "achieved",
+      items: [{ label: val.detail, status }],
+    };
+  }
+  // Fallback — should not happen if copy is well-formed
+  return {
+    id: `phase-${index + 1}`,
+    when: "TBD",
+    title: "Milestone",
+    achieved: false,
+    items: [{ label: "Details forthcoming", status: "planned" }],
+  };
+}
 
+function badgeClass(achieved: boolean): string {
+  return achieved
+    ? "bg-emerald-600/80 text-white"
+    : "bg-slate-600/70 text-white";
+}
+
+export default function Roadmap() {
+  const rd = (COPY as unknown as { roadmap?: unknown }).roadmap as
+    | { title?: string; phases?: unknown[]; footnote?: string }
+    | undefined;
+
+  const title = typeof rd?.title === "string" ? rd.title : "Roadmap";
+  const phasesRaw = Array.isArray(rd?.phases) ? rd!.phases : [];
+  const phases: PhaseUI[] = phasesRaw.map(toUI);
+  const footnote = typeof rd?.footnote === "string" ? rd.footnote : undefined;
+
+  return (
+    <section id="roadmap" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+      <header className="mb-6">
+        <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">{title}</h2>
+      </header>
+
+      <ol className="grid gap-4 md:grid-cols-3">
+        {phases.map((p) => (
+          <li key={p.id} className="rounded-2xl border bg-background/60 backdrop-blur-xl p-5">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h3 className="text-lg font-medium">{p.title}</h3>
+                <div className="text-xs text-muted-foreground mt-0.5">{p.when}</div>
+              </div>
+              <span className={`px-2 py-1 text-[11px] rounded-full ${badgeClass(p.achieved)}`}>
+                {p.achieved ? "Achieved" : "Planned"}
+              </span>
+            </div>
+
+            <ul className="mt-4 space-y-2">
+              {p.items.map((it, i) => (
+                <li key={`${p.id}-${i}`} className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-current opacity-60" />
+                  <span className="text-sm text-muted-foreground">{it.label}</span>
+                  <span className="ml-auto text-[11px] uppercase tracking-wide text-foreground/60">
+                    {it.status}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ol>
+
+      {footnote && <p className="mt-4 text-xs text-muted-foreground">{footnote}</p>}
+    </section>
+  );
+}
+
+// Named export if other files import { Roadmap }
+export { Roadmap };
