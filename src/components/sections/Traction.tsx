@@ -1,78 +1,69 @@
 // src/components/sections/Traction.tsx
+// Traction without any partner/logo/endorsement content.
+
+import React from "react";
 import { COPY } from "@/lib/copy";
 
-// Allow either a text-only logo chip or an image logo
-type TextLogo = { name: string; src?: undefined; alt?: undefined };
-type ImageLogo = { src: string; alt?: string; name?: string };
-type LogoItem = TextLogo | ImageLogo;
-
-type QuoteItem = { quote: string; author?: string };
-
-// Type guards
-function isImageLogo(item: LogoItem): item is ImageLogo {
-  return typeof (item as ImageLogo).src === "string" && (item as ImageLogo).src.length > 0;
-}
+type Stat = { label: string; value: string };
+type Bullet = { title?: string; desc?: string } | string;
 
 export default function Traction() {
-  // Fallbacks in case COPY is missing fields
-  const fallbackLogos: LogoItem[] = [
-    { name: "Alpha Labs" },
-    { name: "Signal Bridge" },
-    { name: "Cerebra Partners" },
-    { name: "Neuron Forge" },
-    { name: "Atlas Ventures" },
-    { name: "Synapse Studio" },
-  ];
-  const fallbackQuotes: QuoteItem[] = [
-    {
-      quote: "“Neurolect’s policy-first runtime is a credible path to safe, cross-device neural interfaces.”",
-      author: "Principal, Atlas Ventures",
-    },
-    {
-      quote: "“A lingua franca for neural intent is the missing layer. HAL + SDKs make this buildable today.”",
-      author: "Founder, Neuro HMI startup",
-    },
-  ];
+  const title = COPY?.traction?.title ?? "Traction";
+  const intro = COPY?.traction?.body ?? COPY?.traction?.desc ?? "";
+  const stats: Stat[] =
+    COPY?.traction?.stats ??
+    COPY?.traction?.metrics ??
+    [];
 
-  const logos: LogoItem[] = Array.isArray(COPY?.traction?.logos) && COPY.traction.logos.length > 0
-    ? (COPY.traction.logos as LogoItem[])
-    : fallbackLogos;
-
-  const quotes: QuoteItem[] = Array.isArray(COPY?.traction?.quotes) && COPY.traction.quotes.length > 0
-    ? (COPY.traction.quotes as QuoteItem[])
-    : fallbackQuotes;
+  const bullets: Bullet[] =
+    COPY?.traction?.bullets ??
+    COPY?.traction?.items ??
+    [];
 
   return (
-    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      {/* Logos */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 items-center">
-        {logos.map((logo, i) => {
-          const key = isImageLogo(logo) ? logo.src : logo.name;
-          return (
-            <div
-              key={key ?? `logo-${i}`}
-              className="rounded-xl border bg-background/50 backdrop-blur p-3 text-center text-xs text-muted-foreground"
-              title={isImageLogo(logo) ? (logo.alt ?? logo.name ?? "Partner") : logo.name}
-            >
-              {/* If you later add real SVGs/PNGs, you can switch to <img> or next/image here. */}
-              {isImageLogo(logo) ? (
-                <span className="font-medium">{logo.alt ?? logo.name ?? "Partner"}</span>
-              ) : (
-                <span className="font-medium">{logo.name}</span>
-              )}
-            </div>
-          );
-        })}
-      </div>
+    <section id="traction" className="py-20">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">{title}</h2>
 
-      {/* Quotes */}
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
-        {quotes.map((q, i) => (
-          <figure key={q.quote ?? `q-${i}`} className="rounded-2xl border bg-background/60 backdrop-blur-xl p-5">
-            <blockquote className="text-sm text-muted-foreground">{q.quote}</blockquote>
-            {q.author && <figcaption className="mt-2 text-xs text-foreground/70">— {q.author}</figcaption>}
-          </figure>
-        ))}
+        {intro ? (
+          <p className="mt-4 text-muted-foreground max-w-3xl">{intro}</p>
+        ) : null}
+
+        {Array.isArray(stats) && stats.length > 0 && (
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {stats.map((s, i) => (
+              <div
+                key={i}
+                className="rounded-2xl border p-6 bg-background/60 backdrop-blur-sm text-center"
+              >
+                <div className="text-3xl font-semibold tracking-tight">{s?.value ?? "-"}</div>
+                <div className="mt-2 text-sm text-muted-foreground">{s?.label ?? ""}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {Array.isArray(bullets) && bullets.length > 0 && (
+          <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {bullets.map((b, i) => {
+              const title = typeof b === "string" ? b : b?.title ?? "";
+              const desc = typeof b === "string" ? "" : b?.desc ?? "";
+              return (
+                <li
+                  key={i}
+                  className="rounded-2xl border p-6 bg-background/60 backdrop-blur-sm hover:shadow-md transition-shadow"
+                >
+                  <h3 className="text-lg font-medium leading-tight">{title}</h3>
+                  {desc ? (
+                    <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
+                  ) : null}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        {/* IMPORTANT: No partner/logo/press/testimonial rows here. */}
       </div>
     </section>
   );
