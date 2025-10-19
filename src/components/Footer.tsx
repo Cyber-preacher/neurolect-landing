@@ -1,17 +1,14 @@
-// src/components/Footer.tsx
-// Minimal footer without partners, logos, or endorsements.
-
-import React from "react";
-import Link from "next/link";
+﻿import Link from "next/link";
 import { COPY } from "@/lib/copy";
 
 const year = new Date().getFullYear();
+const company = "Neurolect";
+
+type FooterLink = { href: string; label: string };
 
 export default function Footer() {
-  const company = COPY?.site?.name ?? "Neurolect";
-  const links =
-    COPY?.footer?.links ??
-    [
+  const links: FooterLink[] =
+    (COPY as any)?.footer?.links ?? [
       { href: "/privacy", label: "Privacy" },
       { href: "/changelog", label: "Changelog" },
     ];
@@ -23,10 +20,9 @@ export default function Footer() {
           <div className="text-sm text-muted-foreground">
             © {year} {company}. All rights reserved.
           </div>
-
           <nav className="flex flex-wrap items-center gap-4 text-sm">
-            {links.map((l: { href: string; label: string }, i: number) => (
-              <Link key={i} href={l.href} className="hover:underline">
+            {links.map((l, i) => (
+              <Link key={${l.href}-} href={l.href} className="hover:underline">
                 {l.label}
               </Link>
             ))}
