@@ -1,15 +1,32 @@
 // src/components/Footer.tsx
+// Minimal, robust footer (no COPY imports; no template literals in keys).
+
+import Link from "next/link";
+
+const year = new Date().getFullYear();
+
+const links: { href: string; label: string }[] = [
+  { href: "/privacy", label: "Privacy" },
+  { href: "/changelog", label: "Changelog" },
+];
+
 export default function Footer() {
   return (
-    <footer className="border-t mt-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 text-sm text-muted-foreground flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-        <span>© {new Date().getFullYear()} Neurolect</span>
-        <nav className="flex flex-wrap gap-x-4 gap-y-2">
-          <a className="hover:underline" href="/team">Team</a>
-          <a className="hover:underline" href="/press">Press</a>
-          <a className="hover:underline" href="/changelog">Changelog</a>
-          <a className="hover:underline" href="/privacy">Privacy</a>
-        </nav>
+    <footer className="mt-24 border-t">
+      <div className="container mx-auto px-4 py-10">
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div className="text-sm text-muted-foreground">
+            © {year} Neurolect. All rights reserved.
+          </div>
+
+          <nav className="flex flex-wrap items-center gap-4 text-sm">
+            {links.map((l, i) => (
+              <Link key={i} href={l.href} className="hover:underline">
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </div>
     </footer>
   );

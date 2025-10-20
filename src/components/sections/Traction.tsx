@@ -1,78 +1,84 @@
 // src/components/sections/Traction.tsx
+// Metrics/bullets only. No partners/logos/quotes. Type-safe (no `any`).
+
 import { COPY } from "@/lib/copy";
 
-// Allow either a text-only logo chip or an image logo
-type TextLogo = { name: string; src?: undefined; alt?: undefined };
-type ImageLogo = { src: string; alt?: string; name?: string };
-type LogoItem = TextLogo | ImageLogo;
+type Stat = { label: string; value: string };
+type Bullet = { title?: string; desc?: string } | string;
 
-type QuoteItem = { quote: string; author?: string };
+function asObject(v: unknown): Record<string, unknown> {
+  return typeof v === "object" && v !== null ? (v as Record<string, unknown>) : {};
+}
 
-// Type guards
-function isImageLogo(item: LogoItem): item is ImageLogo {
-  return typeof (item as ImageLogo).src === "string" && (item as ImageLogo).src.length > 0;
+function getString(o: Record<string, unknown>, key: string): string | undefined {
+  const v = o[key];
+  return typeof v === "string" ? v : undefined;
+}
+
+function getArray<T = unknown>(o: Record<string, unknown>, key: string): T[] {
+  const v = o[key];
+  return Array.isArray(v) ? (v as T[]) : [];
 }
 
 export default function Traction() {
-  // Fallbacks in case COPY is missing fields
-  const fallbackLogos: LogoItem[] = [
-    { name: "Alpha Labs" },
-    { name: "Signal Bridge" },
-    { name: "Cerebra Partners" },
-    { name: "Neuron Forge" },
-    { name: "Atlas Ventures" },
-    { name: "Synapse Studio" },
-  ];
-  const fallbackQuotes: QuoteItem[] = [
-    {
-      quote: "“Neurolect’s policy-first runtime is a credible path to safe, cross-device neural interfaces.”",
-      author: "Principal, Atlas Ventures",
-    },
-    {
-      quote: "“A lingua franca for neural intent is the missing layer. HAL + SDKs make this buildable today.”",
-      author: "Founder, Neuro HMI startup",
-    },
-  ];
+  // Read COPY.traction as unknown, then narrow at runtime.
+  const trRaw = (COPY as unknown as { traction?: unknown })?.traction;
+  const tr = asObject(trRaw);
 
-  const logos: LogoItem[] = Array.isArray(COPY?.traction?.logos) && COPY.traction.logos.length > 0
-    ? (COPY.traction.logos as LogoItem[])
-    : fallbackLogos;
+  const title = getString(tr, "title") ?? "Traction";
+  const intro =
+    getString(tr, "body") ??
+    getString(tr, "desc") ??
+    getString(tr, "text") ??
+    "";
 
-  const quotes: QuoteItem[] = Array.isArray(COPY?.traction?.quotes) && COPY.traction.quotes.length > 0
-    ? (COPY.traction.quotes as QuoteItem[])
-    : fallbackQuotes;
+  const stats =
+    (getArray<Stat>(tr, "stats").length > 0
+      ? getArray<Stat>(tr, "stats")
+      : getArray<Stat>(tr, "metrics")) ?? [];
+
+  const bullets =
+    (getArray<Bullet>(tr, "bullets").length > 0
+      ? getArray<Bullet>(tr, "bullets")
+      : getArray<Bullet>(tr, "items")) ?? [];
+
+  // If nothing to show, render nothing (keeps Home clean).
+  const nothingToShow =
+    !intro && (!stats || stats.length === 0) && (!bullets || bullets.length === 0);
+  if (nothingToShow) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      {/* Logos */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 items-center">
-        {logos.map((logo, i) => {
-          const key = isImageLogo(logo) ? logo.src : logo.name;
-          return (
-            <div
-              key={key ?? `logo-${i}`}
-              className="rounded-xl border bg-background/50 backdrop-blur p-3 text-center text-xs text-muted-foreground"
-              title={isImageLogo(logo) ? (logo.alt ?? logo.name ?? "Partner") : logo.name}
-            >
-              {/* If you later add real SVGs/PNGs, you can switch to <img> or next/image here. */}
-              {isImageLogo(logo) ? (
-                <span className="font-medium">{logo.alt ?? logo.name ?? "Partner"}</span>
-              ) : (
-                <span className="font-medium">{logo.name}</span>
-              )}
-            </div>
-          );
-        })}
-      </div>
+    <section id="traction" className="py-20">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">{title}</h2>
 
-      {/* Quotes */}
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
-        {quotes.map((q, i) => (
-          <figure key={q.quote ?? `q-${i}`} className="rounded-2xl border bg-background/60 backdrop-blur-xl p-5">
-            <blockquote className="text-sm text-muted-foreground">{q.quote}</blockquote>
-            {q.author && <figcaption className="mt-2 text-xs text-foreground/70">— {q.author}</figcaption>}
-          </figure>
-        ))}
+        {intro ? <p className="mt-4 text-muted-foreground max-w-3xl">{intro}</p> : null}
+
+        {Array.isArray(stats) && stats.length > 0 && (
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {stats.map((s, i) => (
+              <div key={i} className="rounded-2xl border p-6 bg-background/60 backdrop-blur-sm text-center">
+                <div className="text-3xl font-semibold tracking-tight">{s?.value ?? "-"}</div>
+                <div className="mt-2 text-sm text-muted-foreground">{s?.label ?? ""}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {Array.isArray(bullets) && bullets.length > 0 && (
+          <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {bullets.map((b, i) => {
+              const t = typeof b === "string" ? b : b?.title ?? "";
+              const d = typeof b === "string" ? "" : b?.desc ?? "";
+              return (
+                <li key={i} className="rounded-2xl border p-6 bg-background/60 backdrop-blur-sm hover:shadow-md transition-shadow">
+                  <h3 className="text-lg font-medium leading-tight">{t}</h3>
+                  {d ? <p className="mt-2 text-sm text-muted-foreground">{d}</p> : null}
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </div>
     </section>
   );
