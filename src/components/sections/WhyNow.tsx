@@ -1,15 +1,47 @@
 // src/components/sections/WhyNow.tsx
-// "Why Now" section without any partners/logos.
+// Content-only “Why Now”; no partners/logos; type-safe without `any`.
 
-import React from "react";
 import { COPY } from "@/lib/copy";
 
 type Point = { title?: string; desc?: string } | string;
 
+function asObject(v: unknown): Record<string, unknown> {
+  return typeof v === "object" && v !== null ? (v as Record<string, unknown>) : {};
+}
+
+function getString(o: Record<string, unknown>, key: string): string | undefined {
+  const v = o[key];
+  return typeof v === "string" ? v : undefined;
+}
+
+function getArray<T = unknown>(o: Record<string, unknown>, key: string): T[] {
+  const v = o[key];
+  return Array.isArray(v) ? (v as T[]) : [];
+}
+
 export default function WhyNow() {
-  const title = COPY?.whyNow?.title ?? "Why now";
-  const body = COPY?.whyNow?.body ?? COPY?.whyNow?.desc ?? "";
-  const points: Point[] = COPY?.whyNow?.points ?? COPY?.whyNow?.items ?? [];
+  const wn = asObject((COPY as unknown as { whyNow?: unknown })?.whyNow);
+
+  const title = getString(wn, "title") ?? "Why now";
+
+  // Prefer keys that may exist; otherwise fall back to empty.
+  // (We don't assume `body`/`desc` exist on the COPY type.)
+  const body =
+    getString(wn, "body") ??
+    getString(wn, "desc") ??
+    getString(wn, "text") ??
+    "";
+
+  const pointsRaw =
+    getArray<Point>(wn, "points").length > 0
+      ? getArray<Point>(wn, "points")
+      : getArray<Point>(wn, "items");
+
+  const points: Point[] = pointsRaw ?? [];
+
+  // If nothing meaningful, render nothing.
+  const nothingToShow = !body && points.length === 0;
+  if (nothingToShow) return null;
 
   return (
     <section id="why-now" className="py-20">
@@ -17,7 +49,7 @@ export default function WhyNow() {
         <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">{title}</h2>
         {body ? <p className="mt-4 text-muted-foreground max-w-3xl">{body}</p> : null}
 
-        {Array.isArray(points) && points.length > 0 && (
+        {points.length > 0 && (
           <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {points.map((p, i) => {
               const t = typeof p === "string" ? p : p?.title ?? "";
@@ -34,8 +66,6 @@ export default function WhyNow() {
             })}
           </ul>
         )}
-
-        {/* No logo/partner/testimonial strips. */}
       </div>
     </section>
   );
