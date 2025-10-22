@@ -1,26 +1,16 @@
 // src/app/sitemap.ts
-import { MetadataRoute } from "next";
-import { absoluteUrl } from "@/lib/site";
-
-const STATIC_ROUTES = [
-  "/",
-  "/how-it-works",
-  "/moat",
-  "/safety",
-  "/why-now",
-  "/investors",
-  "/team",
-  "/press",
-  "/changelog",
-  "/privacy",
-];
+import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
-  return STATIC_ROUTES.map((path) => ({
-    url: absoluteUrl(path),
-    lastModified,
-    changeFrequency: path === "/" ? "daily" : "weekly",
-    priority: path === "/" ? 1.0 : 0.7,
-  }));
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://neurolect.ai";
+  const now = new Date();
+
+  return [
+    { url: `${base}/`, lastModified: now },
+    { url: `${base}/product`, lastModified: now },
+    { url: `${base}/how-it-works`, lastModified: now },
+    { url: `${base}/why-now`, lastModified: now },
+    { url: `${base}/safety`, lastModified: now },
+    { url: `${base}/moat`, lastModified: now },
+  ];
 }
