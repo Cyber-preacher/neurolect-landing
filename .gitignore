@@ -21,3 +21,9 @@ yarn-error.log*
 
 # misc
 *.log
+# accidental binaries & temp text files
+/public/media/EAappInstaller.exe
+/public/media/PlayStationAccessoriesInstaller.exe
+/public/media/message (1).txt
+/public/media/message.txt
+/public/media/v5-txr1udkym8e.pdf
